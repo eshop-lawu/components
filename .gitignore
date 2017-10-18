@@ -1,0 +1,22 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# IntelliJ IDEA #
+*.iml
+.idea
+
+# Eclipse project files
+.settings
+.project
+.classpath
+target
+bin
+
+.DS_Store
+
+#Custom
+application.properties

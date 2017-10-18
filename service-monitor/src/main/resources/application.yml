@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: api-check
+server:
+  port: 5111
+
+# log
+logging:
+  path: ${user.home}/logs/api-check
+
+checkConfig:
+  requests:
+    - title: member-api
+      url: https://api.edian.shop/member-api/getConfig
+      type: GET
+      responseCode: 201
+      responseTime: 1000
+      checkPeriod: 5
+      noticeAgain: 20
+      headers:
+        - name: platform
+          value: monitor
+        - name: platformVersion
+          value: 1.0.0
+        - name: appVersion
+          value: 1.0.0
+        - name: locationPath
+          value: 0
+        - name: channel
+          value: monitor
+    - title: merchant-api
+      url: https://api.edian.shop/merchant-api/getConfig
+      type: GET
+      responseCode: 201
+      responseTime: 1000
+      checkPeriod: 5
+      noticeAgain: 20
+      headers:
+        - name: platform
+          value: monitor
+        - name: platformVersion
+          value: 1.0.0
+        - name: appVersion
+          value: 1.0.0
+        - name: locationPath
+          value: 0
+        - name: channel
+          value: monitor
+  notices:
+    dingtalk:
+      webhookUrl: https://oapi.dingtalk.com/robot/send?access_token=a6d36191e78e67785c577a99136752eb9c8f675464f1db2011e34f66ce90160e
+      atMobiles:
+        - 13528884054
