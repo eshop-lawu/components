@@ -1,6 +1,6 @@
 spring:
   application:
-    name: api-check
+    name: service-monitor
 server:
   port: 5111
 

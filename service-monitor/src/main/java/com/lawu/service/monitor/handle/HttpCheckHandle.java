@@ -57,14 +57,14 @@ public class HttpCheckHandle {
                     String url = httpRequestConfig.getUrl();
 
                     if (checkResult.isSuccess(httpRequestConfig)) {
-                        logger.info("{} Check result: success ", httpRequestConfig.getTitle());
+                        logger.info("{} Check result: success ", url);
                         if (ResultCache.getFailTimes(url) > 0) {
                             ResultCache.clearFailTimes(url);
                             sendNotice(checkResult, httpRequestConfig);
                         }
                     } else {
                         int failTimes = ResultCache.increaseFailTimes(url);
-                        logger.info("{} Check result: fail ", httpRequestConfig.getTitle());
+                        logger.info("{} Check result: fail ", url);
                         logger.info("Check result: fail ({})", failTimes);
                         if (failTimes % httpRequestConfig.getNoticeAgain() == 1) {
                             sendNotice(checkResult, httpRequestConfig);

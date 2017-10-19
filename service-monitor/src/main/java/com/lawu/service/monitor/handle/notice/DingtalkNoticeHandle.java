@@ -37,7 +37,7 @@ public class DingtalkNoticeHandle implements NoticeHandle<DingtalkNoticeConfig> 
 
     @Override
     public void send(CheckResult checkResult, HttpRequestConfig httpRequestConfig) {
-        logger.info("Send notice to dingtalk {}", httpRequestConfig.getTitle());
+        logger.info("Send notice to dingtalk {}", httpRequestConfig.getUrl());
 
         DingtalkNoticeConfig noticeConfig = getNoticeConfig();
 

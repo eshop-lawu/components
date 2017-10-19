@@ -8,7 +8,6 @@ import java.util.List;
  * @date 2017/10/16
  */
 public class HttpRequestConfig {
-    private String title;
     private String url;
     private RequestType type;
     private List<HttpHeaderConfig> headers = new ArrayList<>();
@@ -32,14 +31,6 @@ public class HttpRequestConfig {
      * 服务没有恢复时，检查次数达到该值时再次通知
      */
     private int noticeAgain;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getUrl() {
         return url;
