@@ -6,4 +6,4 @@ server:
 
 # log
 logging:
-  path: ${user.home}/logs/api-check
+  path: ${user.home}/logs/service-monitor

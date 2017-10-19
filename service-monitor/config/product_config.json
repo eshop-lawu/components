@@ -1,7 +1,7 @@
 {
     "notices":{
         "dingtalk":{
-            "webhookUrl":"https://oapi.dingtalk.com/robot/send?access_token=a6d36191e78e67785c577a99136752eb9c8f675464f1db2011e34f66ce90160e",
+            "webhookUrl":"https://oapi.dingtalk.com/robot/send?access_token=90b60eb2ca7fa7f454f5ac4df4db6f6af38638989692fd66db34b921d1375f4a",
             "atMobiles":["13528884054"]
         }
     },
