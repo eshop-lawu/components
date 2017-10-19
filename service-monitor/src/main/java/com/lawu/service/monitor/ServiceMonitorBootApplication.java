@@ -14,13 +14,13 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ServletComponentScan
 @ComponentScan(basePackages = {"com.lawu.service.monitor"})
-public class ApiCheckBootApplication {
+public class ServiceMonitorBootApplication {
 
-    private static Logger logger = LoggerFactory.getLogger(ApiCheckBootApplication.class);
+    private static Logger logger = LoggerFactory.getLogger(ServiceMonitorBootApplication.class);
 
     public static void main(String[] args) {
         logger.info("ServiceMonitor is starting");
-        SpringApplication.run(ApiCheckBootApplication.class, args);
+        SpringApplication.run(ServiceMonitorBootApplication.class, args);
         logger.info("ServiceMonitor is started");
     }
 }

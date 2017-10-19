@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.lawu.service.monitor.ApiCheckBootApplication;
+import com.lawu.service.monitor.ServiceMonitorBootApplication;
 import com.lawu.service.monitor.config.CheckConfig;
 import com.lawu.service.monitor.result.CheckResult;
 
@@ -17,7 +17,7 @@ import com.lawu.service.monitor.result.CheckResult;
  * @date 2017/10/17
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = ApiCheckBootApplication.class)
+@SpringBootTest(classes = ServiceMonitorBootApplication.class)
 public class DingtalkNoticeHandleTest {
 
     @Autowired

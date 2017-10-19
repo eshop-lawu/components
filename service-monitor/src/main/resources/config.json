@@ -1,0 +1,46 @@
+{
+    "notices":{
+        "dingtalk":{
+            "webhookUrl":"https://oapi.dingtalk.com/robot/send?access_token=a6d36191e78e67785c577a99136752eb9c8f675464f1db2011e34f66ce90160e",
+            "atMobiles":["13528884054"]
+        }
+    },
+    "requests":[
+        {
+            "url":"https://api.edian.shop/member-api/getConfig",
+            "type":"GET",
+            "responseCode":201,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"https://api.edian.shop/merchant-api/getConfig",
+            "type":"GET",
+            "responseCode":201,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        }
+    ]
+}

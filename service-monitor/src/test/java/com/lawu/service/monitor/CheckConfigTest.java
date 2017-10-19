@@ -18,7 +18,7 @@ import com.lawu.service.monitor.config.notice.NoticeConfigs;
  * @date 2017/10/17
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = ApiCheckBootApplication.class)
+@SpringBootTest(classes = ServiceMonitorBootApplication.class)
 public class CheckConfigTest {
     @Autowired
     private CheckConfig checkConfig;

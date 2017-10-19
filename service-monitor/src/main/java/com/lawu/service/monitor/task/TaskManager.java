@@ -33,7 +33,7 @@ public class TaskManager implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         HttpCheckHandle httpCheckHandle = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext()).getBean(HttpCheckHandle.class);
-        executorService.scheduleAtFixedRate(new CheckTask(httpCheckHandle), 0, 1, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(new CheckTask(httpCheckHandle), 60, 1, TimeUnit.SECONDS);
 
     }
 
