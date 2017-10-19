@@ -23,7 +23,7 @@ import com.lawu.service.monitor.config.notice.NoticeConfigs;
 @Component
 public class CheckConfig implements InitializingBean{
 
-    @Value(value="file:/product_config.json")
+    @Value(value="file:/config.json")
     private Resource configResource;
 
     private List<HttpRequestConfig> requests = new ArrayList<>();
