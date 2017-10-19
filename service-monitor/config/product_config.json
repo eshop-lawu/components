@@ -7,7 +7,7 @@
     },
     "requests":[
         {
-            "url":"https://api.edian.shop/member-api/getConfig",
+            "url":"http://192.168.100.73/member-api/getConfig",
             "type":"GET",
             "responseCode":201,
             "responseTime":500,
@@ -25,7 +25,43 @@
             ]
         },
         {
-            "url":"https://api.edian.shop/merchant-api/getConfig",
+            "url":"http://192.168.100.74/member-api/getConfig",
+            "type":"GET",
+            "responseCode":201,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.73/merchant-api/getConfig",
+            "type":"GET",
+            "responseCode":201,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.74/merchant-api/getConfig",
             "type":"GET",
             "responseCode":201,
             "responseTime":500,
