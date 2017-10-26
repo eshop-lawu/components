@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.compiler.version>1.8</project.compiler.version>
         <junit.version>4.12</junit.version>
-        <sprint.test.version>4.3.6.RELEASE</sprint.test.version>
+        <spring.test.version>4.3.6.RELEASE</spring.test.version>
         <docker.image.prefix>registry.eshop.com</docker.image.prefix>
         <docker.base.image>java:8-alpine</docker.base.image>
     </properties>
@@ -49,8 +49,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>sprint-test</artifactId>
-            <version>${sprint.test.version}</version>
+            <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
