@@ -1,6 +1,16 @@
-#config-server
-启动两个节点的派号器服务
+纯JAVA命令启动
+------
 ```bash
-nohup java -jar id-worker-1.0-SNAPSHOT.jar --server.port=9002 --number-generation.id-worker.worker-id=0 &
-nohup java -jar id-worker-1.0-SNAPSHOT.jar --server.port=9003 --number-generation.id-worker.worker-id=1 &
+nohup java -jar id-worker-1.0-SNAPSHOT.jar --number-generation.id-worker.worker-id=0 --spring.profiles.active=test &
+```
+
+Docker启动
+-------
+```bash
+sudo docker run -d id-worker --name id-worker -p 9002:9002 \
+    -v ~/config:/usr/local/eshop/config:ro \
+    -v /etc/localtime:/etc/localtime:ro \
+    -e spring.profiles.active=dev \
+    -e number-generation.id-worker.worker-id=0 \
+    registry.eshop.com/id-worker
 ```
