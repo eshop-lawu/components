@@ -1,0 +1,18 @@
+body{ margin: 0 auto; padding: 0; max-width: 80%; font-size: 16px; color: #666; font-family: "Microsoft New Tai Lue";text-align: justify;}
+table{width: 100%;height: 100%;border-collapse: collapse;}
+tr{height: 30px;}
+th{border: gray 1px solid;padding-left: 10px;}
+td{border: gray 1px solid;padding-left: 10px;}
+a{text-decoration: none;}
+.div_head{margin: 30px;height: 20px;line-height: 20px;text-align: center;}
+.select_one{height: 28px;width: 120px;margin-right: 20px;}
+.button_one{height: 30px;line-height:25px;width: 100px;background-color: #5cb85c;border-color: #5cb85c;border-radius: 3px;margin: 0 10px;color: #ffffff}
+.th_title{text-align: right;}
+.success_rec{padding-right: 20px;color: #5cb85c;}
+.success_rec a:link{color: #5cb85c;}
+.success_rec a:visited{color: #5cb85c;}
+.success_rec a:hover{color: #5cb85c;}
+.fail_rec{padding-right: 20px;color: red;}
+.fail_rec a:link{color: red;}
+.fail_rec a:visited{color: red;}
+.fail_rec a:hover{color: red;}
