@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+
+  member-api:
+    image: registry.eshop.com/service-monitor
+    container_name: service-monitor
+    ports:
+      - "5111:5111"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /usr/local/eshop/service-monitor/product_config.json:/config.json:ro
+    labels:
+      env: product
+      ip: 192.168.100.95
+      group: monitor
+      module: service-monitor
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "192.168.100.94:24225"
+        fluentd-async-connect: "true"
+        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
+        labels: "env,ip,group,module"
