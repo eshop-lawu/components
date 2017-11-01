@@ -1,0 +1,9 @@
+auto:
+  test:
+    base:
+      package:
+        name: com.lawu.eshop.
+    server:
+      name: member.api,merchant.api
+    request:
+      ip: http://192.168.1.27:1111/,http://192.168.1.27:2222/
