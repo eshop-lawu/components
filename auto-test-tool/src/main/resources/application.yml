@@ -1,23 +1,15 @@
 spring:
   application:
     name: auto-test-tool
+  profiles:
+    active: local
   freemarker:
     template-loader-path: classpath:/templates
   mvc:
     static-path-pattern: /static/**
 server:
-  port: 6111
+  port: 9003
 
 # log
 logging:
   path: ${user.home}/logs/auto-test-tool
-
-auto:
-  test:
-    base:
-      package:
-        name: com.lawu.eshop.
-    server:
-      name: member.api,merchant.api
-    request:
-      ip: http://192.168.1.27:1111/,http://192.168.1.27:2222/
