@@ -12,4 +12,4 @@ logging:
 
 json:
   file:
-    path: usr/local/eshop/json/
+    path: /usr/local/eshop/json/

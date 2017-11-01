@@ -112,7 +112,7 @@ public class AutoTestController {
         try {
             File file = new File(filePath);
             if (!file.exists()) {
-                file.createNewFile();
+                file.getParentFile().mkdirs();
             }
             out = new FileOutputStream(filePath);
             byte bytes[] = checkResult.getResponseMsg().getBytes();
@@ -145,7 +145,7 @@ public class AutoTestController {
     public Map<String, Object> autoTestInterface(String serverName) {
         Map<String, Object> map = new HashMap<>();
         String fileName = serverName.replace(".", "_");
-        File file = new File(jsonFilePath + fileName);
+        File file = new File(jsonFilePath + fileName + ".json");
         StringBuffer sb = new StringBuffer();
 
         BufferedReader br = null;
