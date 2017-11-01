@@ -31,4 +31,27 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>lawu-releases</id>
+            <url>http://192.168.1.21:9903/nexus/content/repositories/lawu-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>lawu-snapshots</id>
+            <url>http://192.168.1.21:9903/nexus/content/repositories/lawu-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
