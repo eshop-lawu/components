@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,15 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.lawu.autotest.client.config.api.HttpRequestConfig;
-import com.lawu.autotest.client.util.AnnotationScanUtil;
+import com.lawu.autotest.tool.handle.api.GetHttpRequestHandle;
 import com.lawu.autotest.tool.handle.api.HttpRequestHandle;
 import com.lawu.autotest.tool.handle.api.HttpRequestHandleFactory;
 import com.lawu.autotest.tool.result.CheckResult;
@@ -39,8 +35,7 @@ import com.lawu.autotest.tool.result.TestResult;
  * @author meishuquan
  * @date 2017/10/25
  */
-@Controller
-@RequestMapping(value = "/")
+@RestController
 public class AutoTestController {
 
     private Logger logger = LoggerFactory.getLogger(AutoTestController.class);
@@ -55,24 +50,25 @@ public class AutoTestController {
     private String autoTestBasePackageName;
 
     @Autowired
+    private GetHttpRequestHandle getHttpRequestHandle;
+
+    @Autowired
     private HttpRequestHandleFactory httpRequestHandleFactory;
 
     /**
-     * 跳转页面
+     * 获取扫描服务列表
      *
-     * @param request
      * @return
      */
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String index(HttpServletRequest request) {
+    @RequestMapping(value = "getScanServer", method = RequestMethod.GET)
+    public List<String> getScanServer() {
         String[] serverNameArr = autoTestServerName.split(",");
 
         List<String> list = new ArrayList<>();
         for (String serverName : serverNameArr) {
             list.add(serverName);
         }
-        request.setAttribute("list", list);
-        return "index";
+        return list;
     }
 
     /**
@@ -81,7 +77,6 @@ public class AutoTestController {
      * @param serverName
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "scanInterfaceInfo", method = RequestMethod.GET)
     public Map<String, Object> scanInterfaceInfo(String serverName) {
         Map<String, Object> map = new HashMap<>();
@@ -98,20 +93,24 @@ public class AutoTestController {
             }
         }
 
-        List<HttpRequestConfig> requestConfigs = AnnotationScanUtil.getScanInterfaceInfo(scanPackageName, requestIpAddress);
-        if (requestConfigs.isEmpty()) {
+        CheckResult checkResult = getHttpRequestHandle.getScanInterfaceInfo(scanPackageName, requestIpAddress);
+        if (checkResult.getResponseCode() == null || checkResult.getResponseCode() != ResultCode.SC_OK) {
+            map.put("success", false);
+            map.put("msg", "扫描接口数据异常");
+            return map;
+        }
+        if (StringUtils.isEmpty(checkResult.getResponseMsg())) {
             map.put("success", false);
             map.put("msg", "没有扫描到接口数据");
             return map;
         }
 
-        String jsonStr = JSONArray.toJSONString(requestConfigs);
         String path = this.getClass().getResource("/").getPath();
         String filePath = path + fileName + ".json";
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(filePath);
-            byte bytes[] = jsonStr.getBytes();
+            byte bytes[] = checkResult.getResponseMsg().getBytes();
             out.write(bytes);
             out.flush();
             map.put("success", true);
@@ -137,7 +136,6 @@ public class AutoTestController {
      * @param serverName
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "autoTestInterface", method = RequestMethod.GET)
     public Map<String, Object> autoTestInterface(String serverName) {
         Map<String, Object> map = new HashMap<>();

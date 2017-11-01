@@ -2,6 +2,7 @@ package com.lawu.autotest.tool.handle.api;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.lawu.autotest.client.config.api.HttpHeaderConfig;
 import com.lawu.autotest.client.config.api.HttpParamConfig;
 import com.lawu.autotest.client.config.api.HttpRequestConfig;
+import com.lawu.autotest.client.util.AnnotationScanUtil;
 import com.lawu.autotest.tool.result.CheckResult;
 
 
@@ -61,5 +63,14 @@ public class GetHttpRequestHandle implements HttpRequestHandle {
         }
 
         return checkResult;
+    }
+
+    public CheckResult getScanInterfaceInfo(String scanPackageName, String requestIpAddress) {
+        HttpRequestConfig requestConfig = new HttpRequestConfig();
+        requestConfig.setUrl(requestIpAddress + "autoTest/scanInterfaceInfo?packageName=" + scanPackageName + "&requestIpAddress=" + requestIpAddress);
+        requestConfig.setMethod("GET");
+        requestConfig.setHeaders(AnnotationScanUtil.headerConfigs);
+        requestConfig.setParams(new ArrayList<>());
+        return execute(requestConfig);
     }
 }

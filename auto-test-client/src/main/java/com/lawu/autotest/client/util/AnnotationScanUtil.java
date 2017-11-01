@@ -34,6 +34,38 @@ public class AnnotationScanUtil {
 
     private static final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
+    public static List<HttpHeaderConfig> headerConfigs;
+
+    static {
+        headerConfigs = new ArrayList<>();
+        HttpHeaderConfig headerConfig;
+
+        headerConfig = new HttpHeaderConfig();
+        headerConfig.setName("platform");
+        headerConfig.setValue("6");
+        headerConfigs.add(headerConfig);
+
+        headerConfig = new HttpHeaderConfig();
+        headerConfig.setName("platformVersion");
+        headerConfig.setValue("java8");
+        headerConfigs.add(headerConfig);
+
+        headerConfig = new HttpHeaderConfig();
+        headerConfig.setName("appVersion");
+        headerConfig.setValue("1.0");
+        headerConfigs.add(headerConfig);
+
+        headerConfig = new HttpHeaderConfig();
+        headerConfig.setName("locationPath");
+        headerConfig.setValue("0");
+        headerConfigs.add(headerConfig);
+
+        headerConfig = new HttpHeaderConfig();
+        headerConfig.setName("channel");
+        headerConfig.setValue("dev");
+        headerConfigs.add(headerConfig);
+    }
+
     private AnnotationScanUtil() {
     }
 
@@ -96,7 +128,7 @@ public class AnnotationScanUtil {
                     HttpRequestConfig requestConfig = new HttpRequestConfig();
                     requestConfig.setUrl(requestIpAddress + basePath + requestPath);
                     requestConfig.setMethod(requestMethod);
-                    requestConfig.setHeaders(getHeaderParams());
+                    requestConfig.setHeaders(headerConfigs);
                     requestConfig.setParams(paramConfigs);
                     requestConfigs.add(requestConfig);
                 }
@@ -247,43 +279,6 @@ public class AnnotationScanUtil {
             e.printStackTrace();
         }
         return paramConfigs;
-    }
-
-    /**
-     * 请求头部参数
-     *
-     * @return
-     */
-    private static List<HttpHeaderConfig> getHeaderParams() {
-        List<HttpHeaderConfig> headerConfigs = new ArrayList<>();
-        HttpHeaderConfig headerConfig;
-
-        headerConfig = new HttpHeaderConfig();
-        headerConfig.setName("platform");
-        headerConfig.setValue("5");
-        headerConfigs.add(headerConfig);
-
-        headerConfig = new HttpHeaderConfig();
-        headerConfig.setName("platformVersion");
-        headerConfig.setValue("java8");
-        headerConfigs.add(headerConfig);
-
-        headerConfig = new HttpHeaderConfig();
-        headerConfig.setName("appVersion");
-        headerConfig.setValue("1.0");
-        headerConfigs.add(headerConfig);
-
-        headerConfig = new HttpHeaderConfig();
-        headerConfig.setName("locationPath");
-        headerConfig.setValue("0");
-        headerConfigs.add(headerConfig);
-
-        headerConfig = new HttpHeaderConfig();
-        headerConfig.setName("channel");
-        headerConfig.setValue("dev");
-        headerConfigs.add(headerConfig);
-
-        return headerConfigs;
     }
 
 }
