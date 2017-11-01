@@ -2,6 +2,7 @@ package com.lawu.autotest.tool.controller;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,8 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +47,9 @@ public class AutoTestController {
 
     @Value(value = "${auto.test.base.package.name}")
     private String autoTestBasePackageName;
+
+    @Value(value = "${json.file.path}")
+    private String jsonFilePath;
 
     @Autowired
     private GetHttpRequestHandle getHttpRequestHandle;
@@ -105,8 +107,7 @@ public class AutoTestController {
             return map;
         }
 
-        String path = this.getClass().getResource("/").getPath();
-        String filePath = path + fileName + ".json";
+        String filePath = jsonFilePath + fileName + ".json";
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(filePath);
@@ -140,12 +141,12 @@ public class AutoTestController {
     public Map<String, Object> autoTestInterface(String serverName) {
         Map<String, Object> map = new HashMap<>();
         String fileName = serverName.replace(".", "_");
-        Resource resource = new ClassPathResource(fileName + ".json");
+        File file = new File(jsonFilePath + fileName);
         StringBuffer sb = new StringBuffer();
 
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(resource.getFile()), "UTF-8"));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line.trim() + "\r\n");

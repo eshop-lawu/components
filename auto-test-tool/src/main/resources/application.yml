@@ -9,3 +9,7 @@ server:
 # log
 logging:
   path: ${user.home}/logs/auto-test-tool
+
+json:
+  file:
+    path: usr/local/eshop/json/
