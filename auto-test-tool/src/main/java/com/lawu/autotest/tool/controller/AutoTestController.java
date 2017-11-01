@@ -110,6 +110,10 @@ public class AutoTestController {
         String filePath = jsonFilePath + fileName + ".json";
         FileOutputStream out = null;
         try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
             out = new FileOutputStream(filePath);
             byte bytes[] = checkResult.getResponseMsg().getBytes();
             out.write(bytes);
