@@ -7,7 +7,8 @@ nohup java -jar id-worker-1.0-SNAPSHOT.jar --number-generation.id-worker.worker-
 Docker启动
 -------
 ```bash
-sudo docker run -d id-worker --name id-worker -p 9002:9002 \
+sudo docker run -d --name id-worker -p 9002:9002 \
+    --network=eshop_eshopNet \
     -v ~/config:/usr/local/eshop/config:ro \
     -v /etc/localtime:/etc/localtime:ro \
     -e spring.profiles.active=dev \
