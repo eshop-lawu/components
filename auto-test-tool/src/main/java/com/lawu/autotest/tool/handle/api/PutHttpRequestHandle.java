@@ -52,6 +52,7 @@ public class PutHttpRequestHandle implements HttpRequestHandle {
         }
 
         HttpPut httpPut = new HttpPut(url.toString());
+        httpPut.addHeader("authorization","100");
 
         for (HttpHeaderConfig httpHeaderConfig : httpRequestConfig.getHeaders()) {
             httpPut.addHeader(httpHeaderConfig.getName(), httpHeaderConfig.getValue());

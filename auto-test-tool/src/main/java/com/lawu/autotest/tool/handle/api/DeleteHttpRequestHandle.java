@@ -45,6 +45,7 @@ public class DeleteHttpRequestHandle implements HttpRequestHandle {
         }
 
         HttpDelete httpDelete = new HttpDelete(url.toString());
+        httpDelete.addHeader("authorization","100");
 
         for (HttpHeaderConfig httpHeaderConfig : httpRequestConfig.getHeaders()) {
             httpDelete.addHeader(httpHeaderConfig.getName(), httpHeaderConfig.getValue());

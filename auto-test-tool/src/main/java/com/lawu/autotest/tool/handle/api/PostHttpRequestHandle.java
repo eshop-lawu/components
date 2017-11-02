@@ -52,6 +52,7 @@ public class PostHttpRequestHandle implements HttpRequestHandle {
         }
 
         HttpPost httpPost = new HttpPost(url.toString());
+        httpPost.addHeader("authorization","100");
 
         for (HttpHeaderConfig httpHeaderConfig : httpRequestConfig.getHeaders()) {
             httpPost.addHeader(httpHeaderConfig.getName(), httpHeaderConfig.getValue());

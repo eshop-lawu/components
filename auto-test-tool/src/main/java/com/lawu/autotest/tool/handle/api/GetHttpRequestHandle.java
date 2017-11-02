@@ -47,6 +47,7 @@ public class GetHttpRequestHandle implements HttpRequestHandle {
         }
 
         HttpGet httpGet = new HttpGet(url.toString());
+        httpGet.addHeader("authorization","100");
 
         for (HttpHeaderConfig httpHeaderConfig : httpRequestConfig.getHeaders()) {
             httpGet.addHeader(httpHeaderConfig.getName(), httpHeaderConfig.getValue());
