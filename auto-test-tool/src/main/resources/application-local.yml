@@ -6,4 +6,4 @@ auto:
     server:
       name: member.api,merchant.api
     request:
-      ip: http://192.168.1.176:1111/,http://192.168.1.176:2222/
+      ip: http://127.0.0.1:1111/,http://127.0.0.1:2222/
