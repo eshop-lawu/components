@@ -7,9 +7,9 @@
     },
     "requests":[
         {
-            "url":"http://192.168.100.73/member-api/getConfig",
+            "url":"http://192.168.100.73:1111/monitorAgent/check",
             "type":"GET",
-            "responseCode":201,
+            "responseCode":200,
             "responseTime":500,
             "checkPeriod":5,
             "noticeAgain":20,
@@ -25,9 +25,9 @@
             ]
         },
         {
-            "url":"http://192.168.100.74/member-api/getConfig",
+            "url":"http://192.168.100.74:1111/monitorAgent/check",
             "type":"GET",
-            "responseCode":201,
+            "responseCode":200,
             "responseTime":500,
             "checkPeriod":5,
             "noticeAgain":20,
@@ -43,9 +43,9 @@
             ]
         },
         {
-            "url":"http://192.168.100.73/merchant-api/getConfig",
+            "url":"http://192.168.100.73:2222/monitorAgent/check",
             "type":"GET",
-            "responseCode":201,
+            "responseCode":200,
             "responseTime":500,
             "checkPeriod":5,
             "noticeAgain":20,
@@ -61,9 +61,405 @@
             ]
         },
         {
-            "url":"http://192.168.100.74/merchant-api/getConfig",
+            "url":"http://192.168.100.74:2222/monitorAgent/check",
             "type":"GET",
-            "responseCode":201,
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.73:5555/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.74:5555/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.73:6666/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.74:6666/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.80:8001/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.81:8001/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.80:8002/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.81:8002/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.80:8003/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.81:8003/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.80:8004/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.81:8004/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.80:8005/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.81:8005/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.80:8006/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.81:8006/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.80:8007/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.81:8007/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.80:8008/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.81:8008/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.80:7001/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
+            "responseTime":500,
+            "checkPeriod":5,
+            "noticeAgain":20,
+            "headers": [
+                {"name":"platform","value":"5"},
+                {"name":"platformVersion","value":"java8"},
+                {"name":"appVersion","value":"1.0"},
+                {"name":"locationPath","value":"0"},
+                {"name":"channel","value":"dev"}
+            ],
+            "params": [
+                {"name":"rev","value":"dev-monitor"}
+            ]
+        },
+        {
+            "url":"http://192.168.100.81:7001/monitorAgent/check",
+            "type":"GET",
+            "responseCode":200,
             "responseTime":500,
             "checkPeriod":5,
             "noticeAgain":20,
