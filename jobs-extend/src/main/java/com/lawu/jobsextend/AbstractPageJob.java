@@ -13,11 +13,7 @@ public abstract class AbstractPageJob<T> implements PageJob<T> {
     /**
      * 每页数量，0表示不分页
      */
-    private int pageSize = 0;
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
+    private Integer pageSize;
 
     /**
      * 针对一条记录执行任务
@@ -27,6 +23,14 @@ public abstract class AbstractPageJob<T> implements PageJob<T> {
 
     @Override
     public void execute(ShardingContext shardingContext) {
+        if (pageSize == null) {
+            String jobParameter = shardingContext.getJobParameter();
+            if (jobParameter != null) {
+                pageSize = Integer.parseInt(jobParameter);
+            } else {
+                pageSize = 0;
+            }
+        }
         int currentPage = 0;
         while (true) {
             currentPage++;
