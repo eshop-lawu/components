@@ -16,4 +16,10 @@ public abstract class AbstractTxPageJob<T> extends AbstractPageJob<T> {
     public void executePage(List<T> dataPage) throws JobsExtendPageException {
         super.executePage(dataPage);
     }
+
+    @Override
+    public List<T> subUntreatedList(List<T> dataPage, int pageFailIndex) {
+        dataPage.remove(pageFailIndex);
+        return dataPage;
+    }
 }

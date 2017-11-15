@@ -26,17 +26,6 @@ public abstract class AbstractWholePageJob<T> extends AbstractCommonPageJob<T> i
             public boolean executePageConsiderFail(List<T> dataPage) {
                 try {
                     executePage(dataPage);
-                } catch (JobsExtendPageException e) {
-                    if (!continueWhenSinglePageFail()) {
-                        return false;
-                    }
-                    logger.error("Fail to deal page data", e);
-
-                    plusFailSize(1);
-
-                    // 移除坏数据后，重新处理该队列
-                    dataPage.remove(e.getPageFailIndex());
-                    executePageConsiderFail(dataPage);
                 } catch (Exception e) {
                     if (!continueWhenSinglePageFail()) {
                         return false;

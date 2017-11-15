@@ -11,7 +11,7 @@ public class JobsExtendPageException extends Exception {
      */
     private int pageFailIndex;
 
-    public JobsExtendPageException(Throwable cause, int pageFailIndex) {
+    protected JobsExtendPageException(Throwable cause, int pageFailIndex) {
         super(cause);
         this.pageFailIndex = pageFailIndex;
     }
