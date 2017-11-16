@@ -21,21 +21,27 @@ public abstract class AbstractWholePageJob<T> extends AbstractCommonPageJob<T> i
 
         logger.debug("------PageJob-start: {}, jobParameter: {}------", shardingContext.getJobName(), shardingContext.getJobParameter());
 
-        executeJob(shardingContext, new PageExecuteStrategy<T>() {
-            @Override
-            public boolean executePageConsiderFail(List<T> dataPage) {
-                try {
-                    executePage(dataPage);
-                } catch (Exception e) {
-                    if (!continueWhenSinglePageFail()) {
-                        return false;
+        PageCircuitStrategy pageCircuitStrategy = createPageCircuitStrategy();
+
+        while (pageCircuitStrategy.hasNext()) {
+
+            pageCircuitStrategy.next();
+            executeJob(shardingContext, new PageExecuteStrategy<T>() {
+                @Override
+                public boolean executePageConsiderFail(List<T> dataPage) {
+                    try {
+                        executePage(dataPage);
+                    } catch (Exception e) {
+                        if (!continueWhenSinglePageFail()) {
+                            return false;
+                        }
+                        // 其他异常，如跨模块整页处理，不好取得失败的具体数据索引号，则整页标记为失败
+                        plusFailSize(getPageSize());
                     }
-                    // 其他异常，如跨模块整页处理，不好取得失败的具体数据索引号，则整页标记为失败
-                    plusFailSize(getPageSize());
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
         logger.debug("------PageJob-end: {}------", shardingContext.getJobName());
 
     }

@@ -29,24 +29,31 @@ public abstract class AbstractPageResultJob<T, R> extends AbstractCommonPageJob<
 
         logger.debug("------PageJob-start: {}, jobParameter: {}------", shardingContext.getJobName(), shardingContext.getJobParameter());
 
-        List<R> pageResults = new ArrayList<>();
+        PageCircuitStrategy pageCircuitStrategy = createPageCircuitStrategy();
 
-        boolean isAllSuccess = executeJob(shardingContext, new PageExecuteStrategy<T>() {
-            @Override
-            public boolean executePageConsiderFail(List<T> dataPage) {
-                try {
-                    R result = executePage(dataPage);
-                    pageResults.add(result);
-                } catch (Exception e) {
-                    logger.error("Fail to deal page data", e);
-                    return false;
+        while (pageCircuitStrategy.hasNext()) {
+
+            pageCircuitStrategy.next();
+
+            List<R> pageResults = new ArrayList<>();
+
+            boolean isAllSuccess = executeJob(shardingContext, new PageExecuteStrategy<T>() {
+                @Override
+                public boolean executePageConsiderFail(List<T> dataPage) {
+                    try {
+                        R result = executePage(dataPage);
+                        pageResults.add(result);
+                    } catch (Exception e) {
+                        logger.error("Fail to deal page data", e);
+                        return false;
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
 
-        if (isAllSuccess) {
-            executeSummary(pageResults);
+            if (isAllSuccess) {
+                executeSummary(pageResults);
+            }
         }
         logger.debug("------PageJob-end: {}------", shardingContext.getJobName());
     }

@@ -40,26 +40,33 @@ public abstract class AbstractPageJob<T> extends AbstractCommonPageJob<T> implem
 
         logger.debug("------PageJob-start: {}, jobParameter: {}------", shardingContext.getJobName(), shardingContext.getJobParameter());
 
-        executeJob(shardingContext, new PageExecuteStrategy<T>() {
-            @Override
-            public boolean executePageConsiderFail(List<T> dataPage) {
-                try {
-                    executePage(dataPage);
-                } catch (JobsExtendPageException e) {
-                    if (!continueWhenSinglePageFail()) {
-                        return false;
+        PageCircuitStrategy pageCircuitStrategy = createPageCircuitStrategy();
+
+        while (pageCircuitStrategy.hasNext()) {
+
+            pageCircuitStrategy.next();
+
+            executeJob(shardingContext, new PageExecuteStrategy<T>() {
+                @Override
+                public boolean executePageConsiderFail(List<T> dataPage) {
+                    try {
+                        executePage(dataPage);
+                    } catch (JobsExtendPageException e) {
+                        if (!continueWhenSinglePageFail()) {
+                            return false;
+                        }
+                        logger.error("Fail to deal page data", e);
+
+                        plusFailSize(1);
+
+                        // 处理队列后面未处理的数据
+                        dataPage = subUntreatedList(dataPage, e.getPageFailIndex());
+                        executePageConsiderFail(dataPage);
                     }
-                    logger.error("Fail to deal page data", e);
-
-                    plusFailSize(1);
-
-                    // 处理队列后面未处理的数据
-                    dataPage = subUntreatedList(dataPage, e.getPageFailIndex());
-                    executePageConsiderFail(dataPage);
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
         logger.debug("------PageJob-end: {}------", shardingContext.getJobName());
 
     }

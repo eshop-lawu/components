@@ -29,6 +29,11 @@ public abstract class AbstractCommonPageJob<T> implements BasePageJob<T> {
     private Integer pageSize;
 
     /**
+     * 定时任务主体循环策略
+     */
+    private ThreadLocal<PageCircuitStrategy> pageCircuitStrategy = new ThreadLocal<>();
+
+    /**
      * 是否属于状态相关数据
      * 此属性关系到currentPage的计算，如查询出来的数据带有状态，而且该状态在处理完后需要做变更
      * 则currentPage从上次失败的lastFailPage开始算起，而不是每一页均需要加1
@@ -93,5 +98,24 @@ public abstract class AbstractCommonPageJob<T> implements BasePageJob<T> {
 
     public Integer getPageSize() {
         return pageSize;
+    }
+
+    public PageCircuitStrategy getPageCircuitStrategy() {
+        return pageCircuitStrategy.get();
+    }
+
+    protected PageCircuitStrategy createPageCircuitStrategy() {
+        PageCircuitStrategy pageCircuitStrategy = initPageCircuitStrategy();
+        this.pageCircuitStrategy.set(pageCircuitStrategy);
+        return pageCircuitStrategy;
+    }
+
+    /**
+     * 初始化任务循环策略，默认为循环一次，可重写
+     * @return
+     */
+    public PageCircuitStrategy initPageCircuitStrategy() {
+        DefaultPageCircuitStrategy defaultPageCircuitStrategy = new DefaultPageCircuitStrategy();
+        return defaultPageCircuitStrategy;
     }
 }
