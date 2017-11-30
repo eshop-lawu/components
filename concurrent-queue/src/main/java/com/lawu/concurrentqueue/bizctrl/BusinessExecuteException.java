@@ -5,6 +5,9 @@ package com.lawu.concurrentqueue.bizctrl;
  * @date 2017/11/30
  */
 public class BusinessExecuteException extends RuntimeException {
+    
+    private static final long serialVersionUID = 1L;
+    
     private int ret;
     private String msg;
 

@@ -47,7 +47,7 @@ public abstract class AbstractBusinessInventorySynService implements BusinessInv
      * @param id
      * @return
      */
-    abstract Integer getInventoryFromCache(String businessKey, Object id);
+    public abstract Integer getInventoryFromCache(String businessKey, Object id);
 
     /**
      * 更新缓存中的库存
@@ -55,7 +55,7 @@ public abstract class AbstractBusinessInventorySynService implements BusinessInv
      * @param id
      * @param inventory
      */
-    abstract void setInventoryToCache(String businessKey, Object id, Integer inventory);
+    public abstract void setInventoryToCache(String businessKey, Object id, Integer inventory);
 
     /**
      * 缓存中的库存量减一
@@ -63,7 +63,7 @@ public abstract class AbstractBusinessInventorySynService implements BusinessInv
      * @param id
      * @return
      */
-    abstract Integer decreaseInventoryToCache(String businessKey, Object id);
+    public abstract Integer decreaseInventoryToCache(String businessKey, Object id);
 
     /**
      * 缓存中的库存量加一
@@ -71,5 +71,5 @@ public abstract class AbstractBusinessInventorySynService implements BusinessInv
      * @param id
      * @return
      */
-    abstract void increaseInventoryToCache(String businessKey, Object id);
+    public abstract void increaseInventoryToCache(String businessKey, Object id);
 }

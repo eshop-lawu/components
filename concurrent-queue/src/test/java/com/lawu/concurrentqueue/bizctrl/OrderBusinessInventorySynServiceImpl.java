@@ -17,22 +17,22 @@ public class OrderBusinessInventorySynServiceImpl extends AbstractBusinessInvent
     private StringRedisTemplate stringRedisTemplate;
 
     @Override
-    Integer getInventoryFromCache(String businessKey, Object id) {
+    public Integer getInventoryFromCache(String businessKey, Object id) {
         return InventoryCacheManager.getInventoryFromCache(stringRedisTemplate, "", businessKey, id);
     }
 
     @Override
-    void setInventoryToCache(String businessKey, Object id, Integer inventory) {
+    public void setInventoryToCache(String businessKey, Object id, Integer inventory) {
         InventoryCacheManager.setInventoryToCache(stringRedisTemplate, "", businessKey, id, inventory);
     }
 
     @Override
-    Integer decreaseInventoryToCache(String businessKey, Object id) {
+    public Integer decreaseInventoryToCache(String businessKey, Object id) {
         return InventoryCacheManager.decreaseInventoryToCache(stringRedisTemplate, "", businessKey, id);
     }
 
     @Override
-    void increaseInventoryToCache(String businessKey, Object id) {
+    public void increaseInventoryToCache(String businessKey, Object id) {
         InventoryCacheManager.increaseInventoryToCache(stringRedisTemplate, "", businessKey, id);
     }
 }
