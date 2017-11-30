@@ -49,6 +49,8 @@ public class ConcurrentTaskExecutorTest {
         } catch (InterruptedException e) {
 
         }
+
+        System.out.printf("successCount:%s, rejectedCount:%s, exceptionCount:%s, ", successCount.intValue(), rejectedCount.intValue(), exceptionCount.intValue());
         Assert.assertEquals(6, successCount.intValue());
         Assert.assertEquals(3, rejectedCount.intValue());
         Assert.assertEquals(1, exceptionCount.intValue());

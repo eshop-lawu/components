@@ -27,7 +27,7 @@ public class BusinessDecisionAspectTest extends EmbeddedRedis {
     public void aroundMethod() {
         AtomicInteger successCount = new AtomicInteger(0);
         AtomicInteger selloutCount = new AtomicInteger(0);
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 5; i++) {
             new Thread(() -> {
                 Result result = orderService.createOrder(1);
                 switch (result.getRet()) {
@@ -41,12 +41,12 @@ public class BusinessDecisionAspectTest extends EmbeddedRedis {
             }).start();
         }
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
 
         }
-        Assert.assertEquals(10, successCount.intValue());
-        Assert.assertEquals(5, selloutCount.intValue());
+        Assert.assertEquals(2, successCount.intValue());
+        Assert.assertEquals(3, selloutCount.intValue());
     }
 
 }

@@ -13,7 +13,7 @@ public class BusinessDecisionServiceImpl implements BusinessDecisionService<Resu
 
     @Override
     public Integer queryInventory(Object id) {
-        return 10;
+        return 2;
     }
 
     @Override
