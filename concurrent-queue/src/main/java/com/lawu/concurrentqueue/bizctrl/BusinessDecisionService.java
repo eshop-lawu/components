@@ -25,6 +25,6 @@ public interface BusinessDecisionService<T> {
      * 失败
      * @return
      */
-    T fail();
+    T fail(BusinessExecuteException e);
 
 }

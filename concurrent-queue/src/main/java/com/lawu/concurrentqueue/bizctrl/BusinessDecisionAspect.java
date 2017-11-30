@@ -1,10 +1,8 @@
 package com.lawu.concurrentqueue.bizctrl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +35,10 @@ public class BusinessDecisionAspect implements ApplicationContextAware {
 
         Object businessId = point.getArgs()[idParamIndex];
 
-        InventoryResult inventoryResult = businessInventorySynService.decreaseInventory(businessDecisionService, businessKey, businessId);
+        // 缓存库存减一
+        boolean isSuccess = businessInventorySynService.decreaseInventory(businessDecisionService, businessKey, businessId);
 
-        if (InventoryResult.EMPTY == inventoryResult) {
+        if (!isSuccess) {
             return businessDecisionService.sellOut();
         }
 
@@ -47,13 +46,14 @@ public class BusinessDecisionAspect implements ApplicationContextAware {
             // 执行目标方法
             Object result = point.proceed();
             return result;
+        } catch (BusinessExecuteException e) {
+            // 异常时缓存库存加一
+            businessInventorySynService.increaseInventory(businessDecisionService, businessKey, businessId);
+            return businessDecisionService.fail(e);
         } catch (Throwable e) {
-            return businessDecisionService.fail();
-        } finally {
-
-            if (InventoryResult.LAST_ONE == inventoryResult) {
-                businessInventorySynService.updateInventory(businessDecisionService, businessKey, businessId);
-            }
+            // 异常时缓存库存加一
+            businessInventorySynService.decreaseInventory(businessDecisionService, businessKey, businessId);
+            return businessDecisionService.fail(new BusinessExecuteException(e));
         }
     }
 

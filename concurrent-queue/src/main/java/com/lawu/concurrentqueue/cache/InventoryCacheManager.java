@@ -56,4 +56,19 @@ public class InventoryCacheManager {
 
         return count.intValue();
     }
+
+    /**
+     * 缓存中的库存量加一
+     * @param stringRedisTemplate
+     * @param keyPrefix
+     * @param businessKey
+     * @param id
+     * @return 加完之后的值
+     */
+    public static Integer increaseInventoryToCache(StringRedisTemplate stringRedisTemplate, String keyPrefix, String businessKey, Object id) {
+
+        Long count = stringRedisTemplate.boundValueOps(formateKey(keyPrefix, businessKey, id)).increment(1);
+
+        return count.intValue();
+    }
 }

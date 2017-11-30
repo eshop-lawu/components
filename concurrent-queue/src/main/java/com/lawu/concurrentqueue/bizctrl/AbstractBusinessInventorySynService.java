@@ -7,26 +7,38 @@ package com.lawu.concurrentqueue.bizctrl;
 public abstract class AbstractBusinessInventorySynService implements BusinessInventorySynService {
 
     @Override
-    public InventoryResult decreaseInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id) {
-        Integer leftAmount = getInventoryFromCache(businessKey, id);
-        if (leftAmount == null || leftAmount < 0) {
-            updateInventory(businessDecisionService, businessKey, id);
+    public boolean decreaseInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id) {
+        Integer inventory = getInventory(businessDecisionService, businessKey, id);
+        if (inventory <= 0) {
+            return false;
         }
         Integer inventoryAfter = decreaseInventoryToCache(businessKey, id);
         if (inventoryAfter == null || inventoryAfter < 0) {
-            return InventoryResult.EMPTY;
+            return false;
         }
 
-        if (inventoryAfter == 0) {
-            return InventoryResult.LAST_ONE;
-        }
-
-        return InventoryResult.ENOUGH;
+        return true;
     }
 
     @Override
-    public void updateInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id) {
-        setInventoryToCache(businessKey, id, businessDecisionService.queryInventory(id));
+    public void increaseInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id) {
+        increaseInventoryToCache(businessKey, id);
+    }
+
+    @Override
+    public int updateInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id) {
+        Integer inventory = businessDecisionService.queryInventory(id);
+        setInventoryToCache(businessKey, id, inventory);
+        return inventory;
+    }
+
+    @Override
+    public int getInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id) {
+        Integer inventory = getInventoryFromCache(businessKey, id);
+        if (inventory == null || inventory < 0) {
+            inventory = updateInventory(businessDecisionService, businessKey, id);
+        }
+        return inventory;
     }
 
     /**
@@ -52,4 +64,12 @@ public abstract class AbstractBusinessInventorySynService implements BusinessInv
      * @return
      */
     abstract Integer decreaseInventoryToCache(String businessKey, Object id);
+
+    /**
+     * 缓存中的库存量加一
+     * @param businessKey
+     * @param id
+     * @return
+     */
+    abstract void increaseInventoryToCache(String businessKey, Object id);
 }

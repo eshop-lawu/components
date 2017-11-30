@@ -12,9 +12,19 @@ public interface BusinessInventorySynService {
      * @param businessDecisionService
      * @param businessKey
      * @param id
+     * @return 是否成功
+     */
+    boolean decreaseInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id);
+
+    /**
+     * 同步加库存
+     *
+     * @param businessDecisionService
+     * @param businessKey
+     * @param id
      * @return
      */
-    InventoryResult decreaseInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id);
+    void increaseInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id);
 
     /**
      * 更新库存
@@ -22,7 +32,17 @@ public interface BusinessInventorySynService {
      * @param businessDecisionService
      * @param businessKey
      * @param id
+     * @return
      */
-    void updateInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id);
+    int updateInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id);
+
+    /**
+     * 获取库存
+     * @param businessDecisionService
+     * @param businessKey
+     * @param id
+     * @return
+     */
+    int getInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id);
 
 }

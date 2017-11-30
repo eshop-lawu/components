@@ -24,9 +24,9 @@ public class BusinessDecisionServiceImpl implements BusinessDecisionService<Resu
     }
 
     @Override
-    public Result fail() {
+    public Result fail(BusinessExecuteException e) {
         Result rs = new Result();
-        rs.setRet(3);
+        rs.setRet(e.getRet());
         return rs;
     }
 

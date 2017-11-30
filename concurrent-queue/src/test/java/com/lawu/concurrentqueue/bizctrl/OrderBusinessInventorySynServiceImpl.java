@@ -30,4 +30,9 @@ public class OrderBusinessInventorySynServiceImpl extends AbstractBusinessInvent
     Integer decreaseInventoryToCache(String businessKey, Object id) {
         return InventoryCacheManager.decreaseInventoryToCache(stringRedisTemplate, "", businessKey, id);
     }
+
+    @Override
+    void increaseInventoryToCache(String businessKey, Object id) {
+        InventoryCacheManager.increaseInventoryToCache(stringRedisTemplate, "", businessKey, id);
+    }
 }
