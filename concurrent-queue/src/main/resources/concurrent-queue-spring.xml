@@ -19,9 +19,9 @@
        </aop:config>
 
        <bean id="concurrentTaskExecutor" class="com.lawu.concurrentqueue.requestctrl.ConcurrentTaskExecutor" >
-              <property name="corePoolSize" value="${lawu.concurrent.queue.corePoolSize}" />
-              <property name="maximumPoolSize" value="${lawu.concurrent.queue.maximumPoolSize}" />
-              <property name="keepAliveTime" value="${lawu.concurrent.queue.keepAliveTime}" />
-              <property name="queueCount" value="${lawu.concurrent.queue.queueCount}" />
+              <property name="corePoolSize" value="${lawu.concurrentQueue.threadPool.corePoolSize}" />
+              <property name="maximumPoolSize" value="${lawu.concurrentQueue.threadPool.maximumPoolSize}" />
+              <property name="keepAliveTime" value="${lawu.concurrentQueue.threadPool.keepAliveTime}" />
+              <property name="queueCount" value="${lawu.concurrentQueue.threadPool.queueCount}" />
        </bean>
 </beans>
