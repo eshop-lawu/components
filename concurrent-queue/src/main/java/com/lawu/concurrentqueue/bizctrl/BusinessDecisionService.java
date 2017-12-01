@@ -15,6 +15,13 @@ public interface BusinessDecisionService<T> {
     Integer queryInventory(Object id);
 
     /**
+     * 获取同步对象
+     * @param id
+     * @return
+     */
+    Object getSynObj(Object id);
+
+    /**
      * 已抢完
      *
      * @return

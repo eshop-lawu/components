@@ -9,7 +9,7 @@ import com.lawu.concurrentqueue.base.Result;
  * @date 2017/11/29
  */
 @Service
-public class BusinessDecisionServiceImpl implements BusinessDecisionService<Result> {
+public class BusinessDecisionServiceImpl extends AbstractBusinessDecisionService<Result> {
 
     @Override
     public Integer queryInventory(Object id) {

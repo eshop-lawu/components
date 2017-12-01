@@ -36,7 +36,12 @@ public abstract class AbstractBusinessInventorySynService implements BusinessInv
     public int getInventory(BusinessDecisionService businessDecisionService, String businessKey, Object id) {
         Integer inventory = getInventoryFromCache(businessKey, id);
         if (inventory == null || inventory < 0) {
-            inventory = updateInventory(businessDecisionService, businessKey, id);
+            synchronized (businessDecisionService.getSynObj(id)) {
+                inventory = getInventoryFromCache(businessKey, id);
+                if (inventory == null || inventory < 0) {
+                    inventory = updateInventory(businessDecisionService, businessKey, id);
+                }
+            }
         }
         return inventory;
     }
