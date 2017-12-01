@@ -52,7 +52,7 @@ public class BusinessDecisionAspect implements ApplicationContextAware {
             return businessDecisionService.fail(e);
         } catch (Throwable e) {
             // 异常时缓存库存加一
-            businessInventorySynService.decreaseInventory(businessDecisionService, businessKey, businessId);
+            businessInventorySynService.increaseInventory(businessDecisionService, businessKey, businessId);
             return businessDecisionService.fail(new BusinessExecuteException(e));
         }
     }
