@@ -2,6 +2,7 @@ package com.lawu.concurrentqueue.cache;
 
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStringCommands;
+import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -46,7 +47,8 @@ public class InventoryCacheManager {
         RedisSerializer<String> stringSerializer = stringRedisTemplate.getStringSerializer();
         byte[] serializeKey = stringSerializer.serialize(formateKey(keyPrefix, businessKey, id));
         byte[] serializeValue = stringSerializer.serialize(String.valueOf(inventory));
-        RedisConnection connection = stringRedisTemplate.getConnectionFactory().getConnection();
+        RedisConnection connection = RedisConnectionUtils.getConnection(stringRedisTemplate.getConnectionFactory());
+        //RedisConnection connection = stringRedisTemplate.getConnectionFactory().getConnection();
         connection.set(serializeKey, serializeValue, Expiration.seconds(60 * 10), RedisStringCommands.SetOption.ifAbsent());
     }
 
