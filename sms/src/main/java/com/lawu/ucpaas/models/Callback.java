@@ -1,4 +1,4 @@
-package com.ucpaas.models;
+package com.lawu.ucpaas.models;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

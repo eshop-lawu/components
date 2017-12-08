@@ -1,4 +1,4 @@
-package com.ucpaas.param;
+package com.lawu.ucpaas.param;
 
 /**
  * @author zhangyong

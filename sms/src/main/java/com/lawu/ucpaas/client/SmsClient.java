@@ -1,4 +1,4 @@
-package com.ucpaas.client;
+package com.lawu.ucpaas.client;
 
 import java.util.Date;
 
@@ -10,11 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.ucpaas.DateUtil;
-import com.ucpaas.EncryptUtil;
-import com.ucpaas.models.Callback;
-import com.ucpaas.models.TemplateSMS;
-import com.ucpaas.param.SmsParam;
+import com.lawu.ucpaas.DateUtil;
+import com.lawu.ucpaas.EncryptUtil;
+import com.lawu.ucpaas.models.Callback;
+import com.lawu.ucpaas.models.TemplateSMS;
+import com.lawu.ucpaas.param.SmsParam;
 
 
 /**

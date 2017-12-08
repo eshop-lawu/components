@@ -1,4 +1,4 @@
-package com.ucpaas.client;
+package com.lawu.ucpaas.client;
 
 import java.io.ByteArrayInputStream;
 import java.security.KeyManagementException;
@@ -14,20 +14,17 @@ import org.apache.http.params.HttpParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ucpaas.EncryptUtil;
-import com.ucpaas.SSLHttpClient;
-import com.ucpaas.SysConfig;
-import com.ucpaas.param.SmsParam;
+import com.lawu.ucpaas.EncryptUtil;
+import com.lawu.ucpaas.SSLHttpClient;
+import com.lawu.ucpaas.param.SmsParam;
 
 
 public abstract class AbsRestClient {
-
-    protected SysConfig config = SysConfig.getInstance();
-    protected boolean isTest = config.getPropertyBoolean("sms.isTest");
-    protected String server  = config.getProperty("sms.server");
-    protected String sslIP   = config.getProperty("sms.sslIP");
-    protected int sslPort    = config.getPropertyInt("sms.sslPort");
-    protected String version = config.getProperty("sms.version");
+    protected boolean isTest = false;
+    protected String server = "api.ucpaas.com";
+    protected String sslIP = "0";
+    protected int sslPort = 0;
+    protected String version = "2014-06-30";
 
     private static Logger logger = LoggerFactory.getLogger(AbsRestClient.class);
 
