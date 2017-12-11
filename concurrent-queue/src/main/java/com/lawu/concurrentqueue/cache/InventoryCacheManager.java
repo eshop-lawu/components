@@ -32,7 +32,8 @@ public class InventoryCacheManager {
         if (StringUtils.isEmpty(value)) {
             return null;
         }
-        return Integer.valueOf(value);
+        Integer inventory = Integer.valueOf(value);
+        return inventory < 0 ? 0 : inventory;
     }
 
     /**
