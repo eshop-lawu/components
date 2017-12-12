@@ -19,8 +19,10 @@ public class SmsEntrance {
 
         if (MessageChannelEnum.CHANNEL_ALIYUN.equals(param.getChannel())) {
             //阿里大鱼
+            logger.info("阿里短信发送--------");
             return AliYunSmsUtil.sendMessage(param);
         } else if (MessageChannelEnum.CHANNEL_UCPAAS.equals(param.getChannel())) {
+            logger.info("云之讯短信发送--------");
             return new SmsClient().templateSMS(param);
         }
         return null;
