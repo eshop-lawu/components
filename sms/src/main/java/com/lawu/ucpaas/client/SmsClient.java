@@ -10,11 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.lawu.constants.SmsParams;
 import com.lawu.ucpaas.DateUtil;
 import com.lawu.ucpaas.EncryptUtil;
-import com.lawu.ucpaas.models.Callback;
 import com.lawu.ucpaas.models.TemplateSMS;
-import com.lawu.ucpaas.param.SmsParam;
 
 
 /**
@@ -24,59 +23,16 @@ public class SmsClient extends AbsRestClient {
 
     private static Logger logger = LoggerFactory.getLogger(SmsClient.class);
 
-    @Override
-    public String callback(String accountSid, String authToken, String appId,
-                           String fromClient, String to, String fromSerNum, String toSerNum) {
-        String result = "";
-        DefaultHttpClient httpclient = getDefaultHttpClient();
-        try {
-            //MD5加密
-            EncryptUtil encryptUtil = new EncryptUtil();
-            // 构造请求URL内容
-            // 时间戳
-            String timestamp = DateUtil.dateToStr(new Date(), DateUtil.DATE_TIME_NO_SLASH);
-            String signature = getSignature(accountSid, authToken, timestamp, encryptUtil);
-            String url = getStringBuffer().append("/").append(version)
-                    .append("/Accounts/").append(accountSid)
-                    .append("/Calls/callBack")
-                    .append("?sig=").append(signature).toString();
-            System.out.println(url);
-            Callback callback = new Callback();
-            callback.setAppId(appId);
-            callback.setFromClient(fromClient);
-            callback.setTo(to);
-            callback.setFromSerNum(fromSerNum);
-            callback.setToSerNum(toSerNum);
-            Gson gson = new Gson();
-            String body = gson.toJson(callback);
-            body = "{\"callback\":" + body + "}";
-            logger.info("", body);
-            HttpResponse response = post("application/json", accountSid, authToken, timestamp, url, httpclient, encryptUtil, body);
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                result = EntityUtils.toString(entity, "UTF-8");
-            }
-            EntityUtils.consume(entity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // 关闭连接
-            httpclient.getConnectionManager().shutdown();
-        }
-        return result;
-    }
-
-
     /**
      * 短信发送接口
-     *
-     *
+     * <p>
+     * <p>
      * templateSMS
      */
     @Override
-    public String templateSMS(SmsParam param) {
+    public String templateSMS(SmsParams param) {
         String result = "";
-        DefaultHttpClient httpclient = getDefaultHttpClient();
+        DefaultHttpClient httpclient = new DefaultHttpClient();
         try {
             //MD5加密
             EncryptUtil encryptUtil = new EncryptUtil();
@@ -84,21 +40,21 @@ public class SmsClient extends AbsRestClient {
             // 时间戳
             String timestamp = DateUtil.dateToStr(new Date(),
                     DateUtil.DATE_TIME_NO_SLASH);
-            String signature = getSignature(param.getAccountSid(), param.getAuthToken(), timestamp, encryptUtil);
-            String url = getStringBuffer().append("/").append(version)
-                    .append("/Accounts/").append(param.getAccountSid())
+            String signature = getSignature(param.getAccessKeyId(), param.getAccessKeySecret(), timestamp, encryptUtil);
+            String url = getStringBuffer(param.getChannelUrl()).append("/").append(param.getVersion())
+                    .append("/Accounts/").append(param.getAccessKeyId())
                     .append("/Messages/templateSMS")
                     .append("?sig=").append(signature).toString();
             TemplateSMS templateSMS = new TemplateSMS();
             templateSMS.setAppId(param.getAppId());
             templateSMS.setTemplateId(param.getTemplateId());
-            templateSMS.setTo(param.getMobile());
-            templateSMS.setParam(param.getCode());
+            templateSMS.setTo(param.getPhone());
+            templateSMS.setParam(param.getSmsCode());
             Gson gson = new Gson();
             String body = gson.toJson(templateSMS);
             body = "{\"templateSMS\":" + body + "}";
             logger.info(body);
-            HttpResponse response = post("application/json", param.getAccountSid(), param.getAuthToken(), timestamp, url, httpclient, encryptUtil, body);
+            HttpResponse response = post("application/json", param.getAccessKeyId(), param.getAccessKeySecret(), timestamp, url, httpclient, encryptUtil, body);
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 result = EntityUtils.toString(entity, "UTF-8");
