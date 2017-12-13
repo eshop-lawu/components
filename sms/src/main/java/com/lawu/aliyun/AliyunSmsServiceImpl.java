@@ -14,6 +14,7 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.lawu.client.SmsService;
+import com.lawu.constants.StringUtil;
 
 import net.sf.json.JSONObject;
 
@@ -81,7 +82,7 @@ public class AliyunSmsServiceImpl implements SmsService, InitializingBean {
         //使用post提交
         request.setMethod(MethodType.POST);
         //必填:短信签名-可在短信控制台中找到
-        request.setSignName(signName);
+        request.setSignName(StringUtil.getUtf8String(signName));
         //必填:短信签名-可在短信控制台中找到
         client = new DefaultAcsClient(profile);
     }
