@@ -49,9 +49,9 @@ public class AliyunSmsServiceImpl implements SmsService, InitializingBean {
     private SendSmsRequest request;
 
     @Override
-    public String sendSms(String mobile, String content, String templateCode) {
+    public String sendSms(String mobile, String code, String templateCode) {
         JSONObject smsCode = new JSONObject();
-        smsCode.put("code", content);
+        smsCode.put("code", code);
         request.setPhoneNumbers(mobile);
         request.setTemplateCode(templateCode);
         //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
