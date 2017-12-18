@@ -30,7 +30,7 @@ public class ConcurrentTaskExecutor implements InitializingBean {
 
     private ExecutorService executorService;
 
-    Object execute(ConcurrentTask concurrentTask) {
+    public Object execute(ConcurrentTask concurrentTask) {
 
         try {
 
