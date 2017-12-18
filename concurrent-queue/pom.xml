@@ -6,7 +6,7 @@
 
     <groupId>com.lawu</groupId>
     <artifactId>concurrent-queue</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
