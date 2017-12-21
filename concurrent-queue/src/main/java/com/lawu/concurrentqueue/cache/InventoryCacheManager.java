@@ -82,4 +82,15 @@ public class InventoryCacheManager {
 
         return count.intValue();
     }
+
+    /**
+     * 从缓存中清除库存信息
+     * @param stringRedisTemplate
+     * @param keyPrefix
+     * @param businessKey
+     * @param id
+     */
+    public static void clearInventoryFromCache(StringRedisTemplate stringRedisTemplate, String keyPrefix, String businessKey, Object id) {
+        stringRedisTemplate.delete(formateKey(keyPrefix, businessKey, id));
+    }
 }
