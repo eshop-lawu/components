@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 消息生产者 -->
+    <bean id="defaultMQProducer" class="com.alibaba.rocketmq.client.producer.DefaultMQProducer" scope="singleton" init-method="start" destroy-method="shutdown">
+        <!-- Name Server地址列表，多个用分号隔开 -->
+        <property name="namesrvAddr" value="192.168.1.1"/>
+        <!-- 客户端实例名 -->
+        <property name="instanceName" value="producer"/>
+
+        <!-- 客户端IP -->
+        <!-- <property name="clientIP" value="${rocketmq.clientIP}" /> -->
+        <!-- 通信层异步回调线程数 -->
+        <!-- <property name="clientCallbackExecutorThreads" value="${rocketmq.clientCallbackExecutorThreads" /> -->
+        <!-- 轮询Name Server间隔时间，单位毫秒 -->
+        <!-- <property name="pollNameServerInteval" value="${rocketmq.pollNameServerInteval}" /> -->
+        <!-- 向Broker发送心跳间隔时间，单位毫秒  -->
+        <!-- <property name="heartbeatBrokerInterval" value="${rocketmq.heartbeatBrokerInterval}" /> -->
+        <!-- 持久化Consumer消费进度间隔时间，单位毫秒 -->
+        <!-- <property name="persistConsumerOffsetInterval" value="${rocketmq.persistConsumerOffsetInterval}" /> -->
+
+        <!-- Producer组名，多个Producer如果属于一 个应用，发送同样的消息，则应该将它们 归为同一组 -->
+        <property name="producerGroup" value="producerGroup"/>
+        <!-- 发送消息超时时间，单位毫秒 -->
+        <!-- <property name="sendMsgTimeout" value="${rocketmq.producer.sendMsgTimeout}" />-->
+
+
+    </bean>
+
+    <bean id="rocketMQMessageProducerServiceImpl" class="com.lawu.eshop.mq.message.impl.RocketMQMessageProducerServiceImpl" >
+        <property name="defaultMQProducer" ref="defaultMQProducer" />
+    </bean>
+
+
+</beans>

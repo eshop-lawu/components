@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 消息消费者 -->
+    <bean id="defaultMQConsumerFactory" class="com.lawu.eshop.mq.message.MQConsumerFactory" init-method="createDeviceDatagramConsumer" destroy-method="shutdown" >
+        <!-- Name Server地址列表，多个用分号隔开 -->
+        <property name="namesrvAddr" value="192.168.1.1"/>
+        <!-- 客户端实例名 -->
+        <property name="instanceName" value="consumer"/>
+
+        <property name="consumerGroup" value="consumerGroup"/>
+        <!-- 批量拉消息，一次最多拉多少条， 默认设置为32 -->
+        <property name="pullBatchSize" value="35"/>
+        <!-- 批量消费，一次消费多少条消息， 默认设置为1 -->
+        <property name="consumeMessageBatchMaxSize" value="5"/>
+        <property name="consumeThreadMin" value="20" />
+        <property name="consumeThreadMax" value="64" />
+
+        <property name="topicsTags">
+            <map>
+                <entry key="user_topic" value="tag-reg || tag-xxx || tag-yyy" />
+                <entry key="order_topic" value="tag-finish" />
+            </map>
+        </property>
+
+        <!--<property name="messageListenerConcurrently" ref="messageConsumerListener" />-->
+
+    </bean>
+
+    <!--需要继承实现监听器-->
+    <!--<bean id="messageConsumerListener" class="com.lawu.eshop.mq.message.impl.AbstractMessageConsumerListener" />-->
+
+</beans>
