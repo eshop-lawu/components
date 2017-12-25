@@ -3,23 +3,29 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <modules>
-        <module>mq</module>
-    </modules>
-    
     <groupId>com.lawu</groupId>
     <artifactId>components</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.4.RELEASE</version>
-    </parent>
+    <modules>
+        <module>auto-test-client</module>
+        <module>auto-test-tool</module>
+        <module>concurrent-queue</module>
+        <module>id-worker</module>
+        <module>id-worker-client</module>
+        <module>jobs-extend</module>
+        <module>mq</module>
+        <module>service-monitor</module>
+        <module>sms</module>
+        <module>synchronization-lock</module>
+    </modules>
     
     <properties>
         <spring-boot.version>1.5.6.RELEASE</spring-boot.version>
+        <redisson.version>3.5.6</redisson.version>
+        <embedded-redis.version>0.6</embedded-redis.version>
+        <rocketmq.version>3.2.6</rocketmq.version>
     </properties>
     
     <dependencyManagement>
@@ -31,6 +37,48 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.kstyrc</groupId>
+                <artifactId>embedded-redis</artifactId>
+                <version>${embedded-redis.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.rocketmq</groupId>
+                <artifactId>rocketmq-client</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+    
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    
+    <distributionManagement>
+        <repository>
+            <id>lawu-releases</id>
+            <url>http://192.168.1.21:9903/nexus/content/repositories/lawu-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>lawu-snapshots</id>
+            <url>http://192.168.1.21:9903/nexus/content/repositories/lawu-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
