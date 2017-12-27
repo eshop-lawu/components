@@ -22,7 +22,7 @@ import com.lawu.mq.utils.ByteUtil;
 public class RocketMQMessageProducerServiceImpl implements MessageProducerService {
 
     private Logger logger = LoggerFactory.getLogger(RocketMQMessageProducerServiceImpl.class);
-    
+
     @Autowired
     private DefaultMQProducer defaultMQProducer;
 

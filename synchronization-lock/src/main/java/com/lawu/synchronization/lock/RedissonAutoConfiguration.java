@@ -9,9 +9,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.util.StringUtils;
 
 import com.lawu.synchronization.lock.properties.RedissonProperties;
+import com.lawu.synchronization.lock.service.AbstractLockService;
+import com.lawu.synchronization.lock.service.LockService;
 
 /**
  * Redisson自动配置装载类
@@ -48,5 +51,12 @@ public class RedissonAutoConfiguration {
             }
         }
         return Redisson.create(config);
+    }
+    
+    @Primary
+    @Bean
+    public LockService lockService() {
+        return new AbstractLockService() {
+        };
     }
 }

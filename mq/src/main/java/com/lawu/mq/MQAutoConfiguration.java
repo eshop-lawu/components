@@ -14,6 +14,8 @@ import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
 import com.alibaba.rocketmq.common.consumer.ConsumeFromWhere;
 import com.alibaba.rocketmq.common.protocol.heartbeat.MessageModel;
 import com.lawu.mq.MQAutoConfiguration.RocketMQAutoConfiguration;
+import com.lawu.mq.consumer.CustomConsumerRegister;
+import com.lawu.mq.consumer.CustomConsumerRegisterImpl;
 import com.lawu.mq.message.MQConsumerFactory;
 import com.lawu.mq.message.MessageProducerService;
 import com.lawu.mq.message.impl.AbstractMessageConsumerListener;
@@ -29,6 +31,11 @@ import com.lawu.mq.message.impl.RocketMQMessageProducerServiceImpl;
 @Configuration
 @Import({RocketMQAutoConfiguration.class})
 public class MQAutoConfiguration {
+    
+    @Bean
+    public CustomConsumerRegister customConsumerRegister() {
+        return new CustomConsumerRegisterImpl();
+    }
     
     // Mock
     @Bean
