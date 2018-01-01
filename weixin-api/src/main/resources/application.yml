@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: weixin-api
+server:
+  port: 6111
+
+logging:
+  path: ${user.home}/logs/weixin-api
+
+wechat:
+  mp:
+    appId: wx51a325231ace3eb7
+    secret: ea1c393f60661bbf4d204bcd910fbd23
+    token: xx
+    aesKey: xx
+    redirectDomain: http://wx.edian.shop/mp
