@@ -1,11 +1,5 @@
 package com.lawu.weixinapi.converter;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
-
 import com.github.binarywang.wxpay.bean.request.WxPaySendRedpackRequest;
 import com.github.binarywang.wxpay.bean.result.WxPayRedpackQueryResult;
 import com.github.binarywang.wxpay.bean.result.WxPaySendRedpackResult;
@@ -40,6 +34,7 @@ public class RedpackConverter {
         redpackResult.setResultCode(wxPaySendRedpackResult.getResultCode());
         redpackResult.setErrCode(wxPaySendRedpackResult.getErrCode());
         redpackResult.setSendListId(wxPaySendRedpackResult.getSendListid());
+        redpackResult.setStatus(RedpackStatus.SENDING);
         return redpackResult;
     }
 
