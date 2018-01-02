@@ -50,7 +50,7 @@ public class AuthController extends BaseController {
     }
 
     @RequestMapping(value = "getAccessToken", method = RequestMethod.GET)
-    public Result<AccessTokenDTO> getAccessToken(String code) {
+    public Result<AccessTokenDTO> getAccessToken(String appKey, String code) {
         try {
             WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
 
@@ -62,7 +62,7 @@ public class AuthController extends BaseController {
     }
 
     @RequestMapping(value = "getAuthUserInfo", method = RequestMethod.GET)
-    public Result<WeixinUserDTO> getAuthUserInfo(String code) {
+    public Result<WeixinUserDTO> getAuthUserInfo(String appKey, String code) {
         try {
             WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
             WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, "zh_CN");
@@ -75,9 +75,10 @@ public class AuthController extends BaseController {
     }
 
     @RequestMapping(value = "getUserInfo", method = RequestMethod.GET)
-    public Result<WeixinUserDTO> getUserInfo(String openid) {
+    public Result<WeixinUserDTO> getUserInfo(String appKey, String code) {
         try {
-            WxMpUser wxMpUser = wxMpService.getUserService().userInfo(openid,"zh_CN");
+            WxMpOAuth2AccessToken wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
+            WxMpUser wxMpUser = wxMpService.getUserService().userInfo(wxMpOAuth2AccessToken.getOpenId(),"zh_CN");
 
             return successGet(WeixinUserConverter.convert(wxMpUser));
         } catch (WxErrorException e) {

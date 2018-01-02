@@ -14,3 +14,10 @@ wechat:
     token: xx
     aesKey: xx
     redirectDomain: http://wx.edian.shop/mp
+  pay:
+      appId:
+      mchId:
+      mchKey:
+      subAppId:
+      subMchId:
+      keyPath:
