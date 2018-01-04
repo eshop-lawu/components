@@ -42,7 +42,7 @@ public class PayController extends BaseController {
      * @param redpackParam 请求对象
      */
     @PostMapping("sendRedpack")
-    public Result<RedpackResultDTO> sendRedpack(@RequestBody RedpackParam redpackParam) throws WxPayException {
+    public Result<RedpackResultDTO> sendRedpack(String appKey, @RequestBody RedpackParam redpackParam) throws WxPayException {
         WxPaySendRedpackRequest wxPaySendRedpackRequest = RedpackConverter.convert(redpackParam);
         WxPaySendRedpackResult wxPaySendRedpackResult = wxPayService.sendRedpack(wxPaySendRedpackRequest);
         return successCreated(RedpackConverter.convert(wxPaySendRedpackResult));
@@ -60,7 +60,7 @@ public class PayController extends BaseController {
      * @param mchBillNo 商户发放红包的商户订单号，比如10000098201411111234567890
      */
     @GetMapping("/queryRedpack/{mchBillNo}")
-    public Result<RedpackResultDTO> queryRedpack(@PathVariable String mchBillNo) throws WxPayException {
+    public Result<RedpackResultDTO> queryRedpack(@PathVariable String mchBillNo, String appKey) throws WxPayException {
         WxPayRedpackQueryResult wxPayRedpackQueryResult = wxPayService.queryRedpack(mchBillNo);
         return successGet(RedpackConverter.convert(wxPayRedpackQueryResult));
     }

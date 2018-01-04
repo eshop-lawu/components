@@ -28,7 +28,7 @@ public class WeixinUserConverter {
             weixinUserDTO.setSubscribe(wxMpUser.getSubscribe());
             weixinUserDTO.setSubscribeTime(wxMpUser.getSubscribeTime() == null ? null : new Date(wxMpUser.getSubscribeTime()));
             weixinUserDTO.setTagidList(wxMpUser.getTagIds());
-            weixinUserDTO.setUnionid(wxMpUser.getUnionId());;
+            weixinUserDTO.setUnionid(wxMpUser.getUnionId());
         }
         return weixinUserDTO;
     }

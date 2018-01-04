@@ -30,8 +30,8 @@ public class WechatMpConfiguration {
         WxMpInMemoryConfigStorage configStorage = new WxMpInMemoryConfigStorage();
         configStorage.setAppId(this.properties.getAppId());
         configStorage.setSecret(this.properties.getSecret());
-        configStorage.setToken(this.properties.getToken());
-        configStorage.setAesKey(this.properties.getAesKey());
+        /*configStorage.setToken(this.properties.getToken());
+        configStorage.setAesKey(this.properties.getAesKey());*/
         return configStorage;
     }
 

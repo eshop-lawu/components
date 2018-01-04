@@ -9,15 +9,15 @@ logging:
 
 wechat:
   mp:
-    appId: wx51a325231ace3eb7
-    secret: ea1c393f60661bbf4d204bcd910fbd23
+    appId: wx9e232978b8fa933a
+    secret: f4933816bb44b53cd4656c51e70e4b30
     token: xx
     aesKey: xx
     redirectDomain: http://wx.edian.shop/mp
   pay:
-      appId:
-      mchId:
-      mchKey:
-      subAppId:
-      subMchId:
-      keyPath:
+      appId: wx51a325231ace3eb7
+      mchId: 1427140002
+      mchKey: MNUYvbWEQ4fxw6ntEAw3l5JodnkyEZOg
+      subAppId: xx
+      subMchId: xx
+      keyPath: /BOOT-INF/classes/apiclient_cert.p12

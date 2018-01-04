@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawu.weixinapi.base.Result;
@@ -38,7 +39,7 @@ public class AuthController extends BaseController {
     private WechatMpProperties properties;
 
     @RequestMapping(value = "redirect")
-    public Object redirect(String appKey, String redirectURL, String scope, String state) {
+    public Object redirect(String appKey, String redirectURL, String scope, @RequestParam(required = false) String state) {
         try {
             String wxRedirectURI = properties.getRedirectDomain() + "/wx/redirect?url=" + URLEncoder.encode(redirectURL, "utf-8");
             String authorizationUrl = wxMpService.oauth2buildAuthorizationUrl(wxRedirectURI, scope, state);
