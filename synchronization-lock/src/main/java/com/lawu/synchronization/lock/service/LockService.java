@@ -26,6 +26,22 @@ public interface LockService {
     boolean tryLock(String lockKey);
 
     /**
+     * 判断锁是否存在 如果存在返回false 如果不存在，生成一个锁，并且返回true
+     * 
+     * @param waitTime
+     *            等待时间
+     * @param leaseTime
+     *            释放时间
+     * @param lockKey
+     *            锁的名称
+     * @return
+     * @author jiangxinjun
+     * @createDate 2018年1月5日
+     * @updateDate 2018年1月5日
+     */
+    boolean tryLock(long waitTime, long leaseTime, String lockKey);
+
+    /**
      * 释放锁
      * 
      * @param lockKey

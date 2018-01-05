@@ -44,14 +44,7 @@ public abstract class AbstractLockService implements LockService {
     @Override
     public boolean tryLock(String lockKey) {
         RedissonProperties.Lock lock = properties.getLock();
-        boolean rtn = false;
-        RLock rLock = getLock(lockKey);
-        try {
-            rtn = rLock.tryLock(lock.getWaitTime(), lock.getLeaseTime(), TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {
-            logger.error("获取锁失败", e);
-        }
-        return rtn;
+        return tryLock(lock.getWaitTime(), lock.getLeaseTime(), lockKey);
     }
 
     /**
@@ -71,7 +64,19 @@ public abstract class AbstractLockService implements LockService {
             logger.error("释放锁失败", e);
         }
     }
-
+    
+    @Override
+    public boolean tryLock(long waitTime, long leaseTime, String lockKey) {
+        boolean rtn = false;
+        RLock rLock = getLock(lockKey);
+        try {
+            rtn = rLock.tryLock(waitTime, leaseTime, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            logger.error("获取锁失败", e);
+        }
+        return rtn;
+    }
+    
     /**
      * 获取锁
      * 
