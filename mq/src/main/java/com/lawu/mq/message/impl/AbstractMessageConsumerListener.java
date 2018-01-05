@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import com.alibaba.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -28,7 +29,7 @@ public abstract class AbstractMessageConsumerListener implements MessageListener
 
     @Autowired
     private CustomConsumerRegister customConsumerRegister;
-
+    
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
         for (MessageExt messageExt : msgs) {
@@ -36,20 +37,22 @@ public abstract class AbstractMessageConsumerListener implements MessageListener
             String tags = messageExt.getTags();
             byte[] body = messageExt.getBody();
             logger.info("Consume Message: {},{},{}", messageExt.getMsgId(), topic, tags);
-            Object object;
+            Object object = null;
             try {
                 object = ByteUtil.byteToObject(body);
                 /*
                  *  打印消息对象
                  *  放入try-catch代码块，防止对象转换json报错
                  */
-                logger.debug("Message content: {}", JSONObject.toJSONString(object));
+                logger.debug("Message content: {},{}", messageExt.getMsgId(), JSONObject.toJSONString(object));
             } catch(InvalidClassException e) {
             	logger.warn("Message type does not match", e);
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             } catch (IOException | ClassNotFoundException e) {
                 logger.error("Failure consumption, later try to consume", e);
                 return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+            } catch (JSONException e) {
+                logger.error("Object To JSON String Failure", e);
             }
             
             if (customConsumerRegister != null) {
@@ -57,7 +60,7 @@ public abstract class AbstractMessageConsumerListener implements MessageListener
 
                 // 自定义优先
                 if (customConsumer != null) {
-                    customConsumer.consumeMessage(object);
+                    customConsumer.consumeMessage(object, messageExt.getStoreTimestamp());
                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                 }
             }

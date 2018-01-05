@@ -26,7 +26,7 @@ public class ProducerTest {
     
     @Ignore
     @Test
-    public void tt() throws InterruptedException {
+    public void sendMessage() throws InterruptedException {
         messageProducerService.sendMessage("test_topic", "test_tag", "this is a message1");
         countDownLatch.await();
     }

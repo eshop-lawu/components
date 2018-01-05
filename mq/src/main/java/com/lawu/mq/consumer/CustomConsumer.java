@@ -15,7 +15,7 @@ public abstract class CustomConsumer {
 
 
 
-    public abstract void consumeMessage(Object message);
+    public abstract void consumeMessage(Object message, long storeTimestamp);
 
     public String getTopic() {
         return topic;
