@@ -13,7 +13,8 @@ import com.lawu.compensating.transaction.TransactionMainService;
 import com.lawu.compensating.transaction.TransactionStatusService;
 import com.lawu.compensating.transaction.annotation.CompensatingTransactionMain;
 import com.lawu.compensating.transaction.bo.TransactionRecordBO;
-import com.lawu.compensating.transaction.properties.TransactionJobProperties;
+import com.lawu.compensating.transaction.properties.TransactionProperties;
+import com.lawu.compensating.transaction.properties.TransactionProperties.TransactionJob;
 import com.lawu.mq.message.MessageProducerService;
 
 /**
@@ -32,7 +33,7 @@ public abstract class AbstractTransactionMainService<N extends Notification, R e
     private TransactionStatusService transactionStatusService;
     
     @Autowired
-    private TransactionJobProperties transactionJobProperties;
+    private TransactionProperties transactionProperties;
     
     private CompensatingTransactionMain annotation = this.getClass().getAnnotation(CompensatingTransactionMain.class);
 
@@ -94,6 +95,7 @@ public abstract class AbstractTransactionMainService<N extends Notification, R e
 
     @Override
     public void check(Long count) {
+        TransactionJob transactionJob = transactionProperties.getJob();
         List<TransactionRecordBO> notDoneList = transactionStatusService.selectNotDoneList(type);
         for (int i = 0; i < notDoneList.size(); i++) {
         	TransactionRecordBO transactionRecordBO = notDoneList.get(i);
@@ -102,7 +104,7 @@ public abstract class AbstractTransactionMainService<N extends Notification, R e
         	 * 当前的执行总次数  / ( 执行次数  ^ 基数) == 0
         	 * 执行次数 < 可执行的次数
         	 */
-        	if (transactionRecordBO.getTimes() < transactionJobProperties.getExectotalCount() && count % (long) Math.pow(transactionJobProperties.getIntervalBaseNumber(), transactionRecordBO.getTimes()) == 0) {
+        	if (transactionRecordBO.getTimes() < transactionJob.getExectotalCount() && count % (long) Math.pow(transactionJob.getIntervalBaseNumber(), transactionRecordBO.getTimes()) == 0) {
 	            N notification = selectNotification(transactionRecordBO.getRelateId());
 	            if (notification == null) {
 	                throw new IllegalArgumentException("Can't find the notification by relateId: " + transactionRecordBO.getRelateId());

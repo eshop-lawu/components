@@ -67,7 +67,7 @@ public class TransactionInitializing implements InitializingBean, ApplicationCon
             customConsumerRegister.registerConsumers(new CustomConsumer(annotation.topic(), annotation.tags() + "-reply") {
                 @SuppressWarnings("unchecked")
                 @Override
-                public void consumeMessage(Object message) {
+                public void consumeMessage(Object message, long storeTimestamp) {
                     finalTransactionMainService.receiveCallback(message);
                 }
             });
@@ -100,8 +100,8 @@ public class TransactionInitializing implements InitializingBean, ApplicationCon
             customConsumerRegister.registerConsumers(new CustomConsumer(annotation.topic(), annotation.tags()) {
                 @SuppressWarnings("unchecked")
                 @Override
-                public void consumeMessage(Object message) {
-                    finalTransactionFollowService.receiveNotice((Notification) message);
+                public void consumeMessage(Object message, long storeTimestamp) {
+                    finalTransactionFollowService.receiveNotice((Notification) message, storeTimestamp);
                 }
             });
 

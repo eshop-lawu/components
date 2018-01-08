@@ -1,6 +1,7 @@
 package com.lawu.compensating.transaction.impl;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lawu.compensating.transaction.Notification;
 import com.lawu.compensating.transaction.Reply;
 import com.lawu.compensating.transaction.annotation.CompensatingTransactionFollow;
+import com.lawu.compensating.transaction.properties.TransactionProperties;
 import com.lawu.compensating.transaction.service.FollowTransactionRecordService;
 import com.lawu.compensating.transaction.service.TransactionFollowService;
 import com.lawu.mq.message.MessageProducerService;
@@ -40,9 +42,16 @@ public abstract class AbstractTransactionFollowService<N extends Notification, R
     @Autowired
     private FollowTransactionRecordService followTransactionRecordService;
 
+    @Autowired
+    private TransactionProperties transactionProperties;
+    
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void receiveNotice(N notification) {
+    public void receiveNotice(N notification, long storeTimestamp) {
+        if (new Date().getTime() - storeTimestamp >= transactionProperties.getMessageValidTime()) {
+            logger.info("消息已经失效");
+            return;
+        }
     	// 统一处理事务异常，手动捕捉异常，并且打印错误信息
     	StringBuilder locakName = new StringBuilder();
 		locakName.append(topic).append("_").append(annotation.tags()).append("_").append(notification.getTransactionId());
@@ -70,9 +79,9 @@ public abstract class AbstractTransactionFollowService<N extends Notification, R
             reply.setTransactionId(notification.getTransactionId());
             sendCallback(reply);
     	} catch (Exception e) {
-    		logger.error("事务执行异常", e);
-    		// 抛出异常，回滚事务
-    		throw e;
+            logger.error("事务执行异常", e);
+            // 抛出异常，回滚事务
+            throw new RuntimeException(e);
     	} finally {
     	  /*
     	   * 事务执行完成释放锁

@@ -1,12 +1,12 @@
 package com.lawu.compensating.transaction;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
 
-import com.lawu.compensating.transaction.properties.TransactionJobProperties;
+import com.lawu.compensating.transaction.properties.TransactionProperties;
 import com.lawu.compensating.transaction.service.CacheService;
 import com.lawu.compensating.transaction.service.FollowTransactionRecordService;
 import com.lawu.compensating.transaction.service.impl.CacheServiceImpl;
@@ -20,9 +20,9 @@ import com.lawu.compensating.transaction.service.impl.TransactionStatusServiceIm
  * @createDate 2017年12月22日
  * @updateDate 2017年12月22日
  */
-@Profile("compensating-transaction")
+@ConditionalOnProperty(name = {"lawu.compensating-transaction.enabled"}, havingValue="true", matchIfMissing = false)
 @Configuration
-@EnableConfigurationProperties({ TransactionJobProperties.class })
+@EnableConfigurationProperties({ TransactionProperties.class })
 @Import({TransactionInitializing.class})
 public class CompensatingTransactionAutoConfiguration {
     

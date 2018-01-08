@@ -13,7 +13,7 @@ public interface TransactionFollowService<N, R>{
      *
      * @param notification
      */
-    void receiveNotice(N notification);
+    void receiveNotice(N notification, long storeTimestamp);
 
     /**
      * 补偿成功回调
