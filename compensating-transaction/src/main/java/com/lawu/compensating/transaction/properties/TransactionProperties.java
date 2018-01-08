@@ -40,18 +40,13 @@ public class TransactionProperties {
         /**
          * 间隔基数（次数）
          */
-        private Long intervalBaseNumber;
+        private Long intervalBaseNumber = 2L;
         
         /**
          * 执行最大次数
          */
-        private Long exectotalCount;
+        private Long exectotalCount = 10L;
         
-        /**
-         * MQ消息有效时间(单位:毫秒)
-         */
-        private long messageValidTime = 60 * 1000L;
-
         public Long getIntervalBaseNumber() {
             return intervalBaseNumber;
         }
@@ -68,13 +63,5 @@ public class TransactionProperties {
             this.exectotalCount = exectotalCount;
         }
 
-        public long getMessageValidTime() {
-            return messageValidTime;
-        }
-
-        public void setMessageValidTime(long messageValidTime) {
-            this.messageValidTime = messageValidTime;
-        }
-        
     }
 }

@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>compensating-transaction</artifactId>
+    <version>1.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
