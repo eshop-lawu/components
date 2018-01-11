@@ -96,7 +96,7 @@ public abstract class AbstractTransactionMainService<N extends Notification, R e
     @Override
     public void check(Long count) {
         TransactionJob transactionJob = transactionProperties.getJob();
-        List<TransactionRecordBO> notDoneList = transactionStatusService.selectNotDoneList(type);
+        List<TransactionRecordBO> notDoneList = transactionStatusService.selectNotDoneList(type, transactionJob.getExectotalCount());
         for (int i = 0; i < notDoneList.size(); i++) {
         	TransactionRecordBO transactionRecordBO = notDoneList.get(i);
         	

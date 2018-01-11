@@ -3,8 +3,6 @@ package com.lawu.compensating.transaction;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -13,7 +11,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,7 +18,6 @@ import com.lawu.compensating.transaction.domain.FollowTransactionRecordDOExample
 import com.lawu.compensating.transaction.domain.SeckillActivityProductDO;
 import com.lawu.compensating.transaction.domain.ShoppingOrderDO;
 import com.lawu.compensating.transaction.domain.TransactionRecordDO;
-import com.lawu.compensating.transaction.domain.TransactionRecordDOExample;
 import com.lawu.compensating.transaction.mapper.FollowTransactionRecordDOMapper;
 import com.lawu.compensating.transaction.mapper.SeckillActivityProductDOMapper;
 import com.lawu.compensating.transaction.mapper.ShoppingOrderDOMapper;
@@ -29,16 +25,8 @@ import com.lawu.compensating.transaction.mapper.TransactionRecordDOMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApplicationTest.class)
-public class TransactionTest {
-    
-    public final static String TOPIC = "test_topic";
-    
-    public final static String TAGS = "test_tag";
-    
-    public final static byte TYPE = 0x01;
-    
-    public final static CountDownLatch countDownLatch = new CountDownLatch(1);
-    
+public class TransactionScheduledJobTest {
+
     @BeforeClass
     public static void before() throws Exception {
         EmbeddedRedis.start();
@@ -49,10 +37,6 @@ public class TransactionTest {
     public static void after() throws IOException {
         EmbeddedRedis.stop();
     }
-    
-    @Autowired
-    @Qualifier("testTransactionMainServiceImpl")
-    private TransactionMainService<TestReply> testTransactionMainServiceImpl;
     
     @Autowired
     private ShoppingOrderDOMapper shoppingOrderDOMapper;
@@ -68,7 +52,7 @@ public class TransactionTest {
     
     @Ignore
     @Test
-    public void sendNotice() throws InterruptedException {
+    public void transactionScheduledJobTest() throws InterruptedException {
         SeckillActivityProductDO seckillActivityProductDO = new SeckillActivityProductDO();
         seckillActivityProductDO.setActivityId(1L);
         seckillActivityProductDO.setAttentionCount(0);
@@ -118,24 +102,22 @@ public class TransactionTest {
         expected.setActivityProductId(seckillActivityProductDO.getId());
         shoppingOrderDOMapper.insertSelective(expected);
         
-        // 模拟重复消息
-        testTransactionMainServiceImpl.sendNotice(expected.getId());
+        TransactionRecordDO transactionRecordDO = new TransactionRecordDO();
+        transactionRecordDO.setRelateId(expected.getId());
+        transactionRecordDO.setGmtCreate(new Date());
+        transactionRecordDO.setGmtModified(new Date());
+        transactionRecordDO.setIsProcessed(false);
+        transactionRecordDO.setTimes(0L);
+        transactionRecordDO.setType(TransactionTest.TYPE);
+        transactionRecordDOMapper.insert(transactionRecordDO);
         
         //等待事务执行完成
-        countDownLatch.await(5000, TimeUnit.MILLISECONDS);
+        TransactionTest.countDownLatch.await();
         
         // 发送消息是否正常
-        TransactionRecordDOExample example = new TransactionRecordDOExample();
-        example.createCriteria().andRelateIdEqualTo(expected.getId()).andTypeEqualTo(TransactionTest.TYPE);
-        TransactionRecordDO transactionRecordDO = transactionRecordDOMapper.selectByExample(example).get(0);
-        Assert.assertNotNull(transactionRecordDO);
-        Assert.assertNotNull(transactionRecordDO.getGmtModified());
-        Assert.assertNotNull(transactionRecordDO.getGmtCreate());
-        Assert.assertNotNull(transactionRecordDO.getId());
-        Assert.assertNotNull(transactionRecordDO.getType());
+        transactionRecordDO = transactionRecordDOMapper.selectByPrimaryKey(transactionRecordDO.getId());
         Assert.assertEquals(true, transactionRecordDO.getIsProcessed());
-        Assert.assertEquals(expected.getId(), transactionRecordDO.getRelateId());
-        Assert.assertEquals(0L, transactionRecordDO.getTimes().longValue());
+        Assert.assertEquals(1L, transactionRecordDO.getTimes().longValue());
         
         FollowTransactionRecordDOExample followTransactionRecordDOExample = new FollowTransactionRecordDOExample();
         followTransactionRecordDOExample.createCriteria().andTransationIdEqualTo(transactionRecordDO.getId()).andTopicEqualTo(TransactionTest.TOPIC);
@@ -146,4 +128,5 @@ public class TransactionTest {
         Assert.assertNotNull(actualShoppingOrderDO);
         Assert.assertEquals(Byte.valueOf((byte)0x01), actualShoppingOrderDO.getOrderStatus());
     }
+    
 }

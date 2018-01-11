@@ -2,10 +2,6 @@ package com.lawu.compensating.transaction;
 
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-
 import redis.embedded.RedisServer;
 
 /**
@@ -16,22 +12,16 @@ import redis.embedded.RedisServer;
  * @author Leach
  * @date 2017/10/11
  */
-public abstract class EmbeddedRedis {
+public class EmbeddedRedis {
     
     private static RedisServer redisServer = null;
 
-    @BeforeClass
-    public static void setup() {
-        try {
-            redisServer = new RedisServer(6379);
-        } catch (IOException e) {
-            Assert.fail(e.getMessage());
-        }
+    public static void start() throws IOException {
+        redisServer = new RedisServer(6379);
         redisServer.start();
     }
 
-    @AfterClass
-    public static void finish() {
+    public static void stop() {
         redisServer.stop();
         redisServer = null;
     }

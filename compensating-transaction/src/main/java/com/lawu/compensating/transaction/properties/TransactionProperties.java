@@ -47,6 +47,11 @@ public class TransactionProperties {
          */
         private Long exectotalCount = 10L;
         
+        /**
+         * 是否禁用
+         */
+        private Boolean disabled = false;
+        
         public Long getIntervalBaseNumber() {
             return intervalBaseNumber;
         }
@@ -61,6 +66,14 @@ public class TransactionProperties {
 
         public void setExectotalCount(Long exectotalCount) {
             this.exectotalCount = exectotalCount;
+        }
+
+        public Boolean getDisabled() {
+            return disabled;
+        }
+
+        public void setDisabled(Boolean disabled) {
+            this.disabled = disabled;
         }
 
     }

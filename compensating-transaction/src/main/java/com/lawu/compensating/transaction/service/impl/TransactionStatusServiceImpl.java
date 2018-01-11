@@ -78,14 +78,13 @@ public class TransactionStatusServiceImpl implements TransactionStatusService {
 	}
 
 	@Override
-	public List<TransactionRecordBO> selectNotDoneList(byte type) {
+	public List<TransactionRecordBO> selectNotDoneList(byte type, Long exectotalCount) {
 		TransactionRecordDOExample example = new TransactionRecordDOExample();
-		example.createCriteria().andTypeEqualTo(type).andIsProcessedEqualTo(false);
+		example.createCriteria().andTypeEqualTo(type).andIsProcessedEqualTo(false).andTimesLessThan(exectotalCount);
 		List<TransactionRecordDO> transactionRecordDOS = transactionRecordDOMapper.selectByExample(example);
 		List<TransactionRecordBO> notDoneList = new ArrayList<>();
 		for (int i = 0; i < transactionRecordDOS.size(); i++) {
 			TransactionRecordDO transactionRecordDO = transactionRecordDOS.get(i);
-
 			TransactionRecordBO transactionRecordBO = new TransactionRecordBO();
 			transactionRecordBO.setId(transactionRecordDO.getId());
 			transactionRecordBO.setRelateId(transactionRecordDO.getRelateId());

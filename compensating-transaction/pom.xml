@@ -10,8 +10,12 @@
     </parent>
 
     <artifactId>compensating-transaction</artifactId>
-    <version>1.1-SNAPSHOT</version>
-
+    <version>1.2-SNAPSHOT</version>
+    
+    <properties>
+        <elastic.job.version>2.1.5</elastic.job.version>
+    </properties>
+    
     <dependencies>
         <dependency>
             <groupId>com.lawu</groupId>
@@ -51,6 +55,24 @@
         <dependency>
             <groupId>com.dangdang</groupId>
             <artifactId>elastic-job-lite-core</artifactId>
+            <version>${elastic.job.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.curator</groupId>
+                    <artifactId>curator-client</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-client</artifactId>
+            <version>2.11.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-spring</artifactId>
+            <version>${elastic.job.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -87,6 +109,11 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

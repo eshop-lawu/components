@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "lawu.compensating-transaction.job.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用事务补偿定时任务"
+  },
+  {
+    "name": "lawu.compensating-transaction.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用事务"
+  }
+]}

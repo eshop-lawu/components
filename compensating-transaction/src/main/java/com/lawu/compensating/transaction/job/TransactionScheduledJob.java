@@ -33,6 +33,9 @@ public class TransactionScheduledJob implements SimpleJob, InitializingBean, App
     
     @Override
     public void execute(ShardingContext shardingContext) {
+        if (transactionMainServiceList.isEmpty()) {
+            return;
+        }
     	// 从缓存中获取执行次数
     	Long count = cacheService.getCount(transactionMainServiceList.get(0).getTopic());
         for (int i = 0; i < transactionMainServiceList.size(); i++) {

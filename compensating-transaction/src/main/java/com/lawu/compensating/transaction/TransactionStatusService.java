@@ -33,7 +33,7 @@ public interface TransactionStatusService {
      * @param type
      * @return
      */
-    List<TransactionRecordBO> selectNotDoneList(byte type);
+    List<TransactionRecordBO> selectNotDoneList(byte type, Long exectotalCount);
     
     /**
      * 更新事务记录的执行次数
