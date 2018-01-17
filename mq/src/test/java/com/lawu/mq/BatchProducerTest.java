@@ -40,7 +40,7 @@ public class BatchProducerTest {
     @Ignore
     @Test
     public void sendMessage() throws InterruptedException {
-        int messageCount = 10;
+        int messageCount = 100;
         countDownLatch = new CountDownLatch(messageCount * 3);
 
         AtomicInteger sendCount = new AtomicInteger(0);
@@ -75,6 +75,6 @@ public class BatchProducerTest {
             }).start();
         }
         countDownLatch.await();
-        System.out.printf("sendCount:%s, revCount:%s, revReplyCount:%s", sendCount, revCount, revReplyCount);
+        System.out.printf("sendCount:%s, revCount:%s, revReplyCount:%s\n", sendCount, revCount, revReplyCount);
     }
 }
