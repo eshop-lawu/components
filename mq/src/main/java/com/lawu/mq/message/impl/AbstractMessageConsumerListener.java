@@ -61,7 +61,7 @@ public abstract class AbstractMessageConsumerListener implements MessageListener
                 // 自定义优先
                 if (customConsumer != null) {
                     customConsumer.consumeMessage(object, messageExt.getStoreTimestamp());
-                    return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+                    continue;
                 }
             }
 
