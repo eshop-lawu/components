@@ -1,4 +1,4 @@
-package com.lawu.weixinapi.param;
+package com.lawu.weixinapi.dto.param;
 
 /**
  * @author Leach

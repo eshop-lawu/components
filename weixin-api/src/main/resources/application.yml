@@ -14,10 +14,3 @@ wechat:
     token: xx
     aesKey: xx
     redirectDomain: http://wx.edian.shop/mp
-  pay:
-      appId: wx51a325231ace3eb7
-      mchId: 1427140002
-      mchKey: MNUYvbWEQ4fxw6ntEAw3l5JodnkyEZOg
-      subAppId: xx
-      subMchId: xx
-      keyPath: /BOOT-INF/classes/apiclient_cert.p12
