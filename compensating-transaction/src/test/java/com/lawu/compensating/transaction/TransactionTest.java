@@ -2,6 +2,7 @@ package com.lawu.compensating.transaction;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.lawu.compensating.transaction.domain.FollowTransactionRecordDO;
 import com.lawu.compensating.transaction.domain.FollowTransactionRecordDOExample;
 import com.lawu.compensating.transaction.domain.SeckillActivityProductDO;
 import com.lawu.compensating.transaction.domain.ShoppingOrderDO;
@@ -26,6 +28,7 @@ import com.lawu.compensating.transaction.mapper.FollowTransactionRecordDOMapper;
 import com.lawu.compensating.transaction.mapper.SeckillActivityProductDOMapper;
 import com.lawu.compensating.transaction.mapper.ShoppingOrderDOMapper;
 import com.lawu.compensating.transaction.mapper.TransactionRecordDOMapper;
+import com.lawu.compensating.transaction.properties.TransactionProperties;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApplicationTest.class)
@@ -66,9 +69,31 @@ public class TransactionTest {
     @Autowired
     private FollowTransactionRecordDOMapper followTransactionRecordDOMapper;
     
+    @Autowired
+    private TransactionProperties transactionProperties;
+    
     @Ignore
     @Test
     public void sendNotice() throws InterruptedException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR, - transactionProperties.getDeleteRecordTime());
+        
+        TransactionRecordDO transactionRecord = new TransactionRecordDO();
+        transactionRecord.setGmtModified(new Date());
+        transactionRecord.setGmtCreate(calendar.getTime());
+        transactionRecord.setIsProcessed(true);
+        transactionRecord.setRelateId(1L);
+        transactionRecord.setTimes(0L);
+        transactionRecord.setType((byte) 0);
+        transactionRecordDOMapper.insert(transactionRecord);
+        
+        FollowTransactionRecordDO followTransactionRecord = new FollowTransactionRecordDO();
+        followTransactionRecord.setGmtCreate(calendar.getTime());
+        followTransactionRecord.setTopic(TOPIC);
+        followTransactionRecord.setTransationId(1L);
+        followTransactionRecordDOMapper.insert(followTransactionRecord);
+        
         SeckillActivityProductDO seckillActivityProductDO = new SeckillActivityProductDO();
         seckillActivityProductDO.setActivityId(1L);
         seckillActivityProductDO.setAttentionCount(0);
@@ -145,5 +170,10 @@ public class TransactionTest {
         ShoppingOrderDO actualShoppingOrderDO = shoppingOrderDOMapper.selectByPrimaryKey(expected.getId());
         Assert.assertNotNull(actualShoppingOrderDO);
         Assert.assertEquals(Byte.valueOf((byte)0x01), actualShoppingOrderDO.getOrderStatus());
+        
+        FollowTransactionRecordDO followTransactionRecordAcutal = followTransactionRecordDOMapper.selectByPrimaryKey(followTransactionRecord.getId());
+        Assert.assertNull(followTransactionRecordAcutal);
+        TransactionRecordDO transactionRecordDOAcutal = transactionRecordDOMapper.selectByPrimaryKey(followTransactionRecord.getId());
+        Assert.assertNull(transactionRecordDOAcutal);
     }
 }

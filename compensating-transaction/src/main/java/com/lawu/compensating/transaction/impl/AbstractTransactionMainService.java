@@ -76,7 +76,7 @@ public abstract class AbstractTransactionMainService<N extends Notification, R e
         messageProducerService.sendMessage(topic, tags, notification);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void receiveCallback(R reply) {
     	try {

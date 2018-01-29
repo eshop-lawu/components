@@ -1,5 +1,6 @@
 package com.lawu.compensating.transaction.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lawu.compensating.transaction.domain.FollowTransactionRecordDO;
 import com.lawu.compensating.transaction.domain.FollowTransactionRecordDOExample;
 import com.lawu.compensating.transaction.mapper.FollowTransactionRecordDOMapper;
+import com.lawu.compensating.transaction.properties.TransactionProperties;
 import com.lawu.compensating.transaction.service.FollowTransactionRecordService;
 
 /**
@@ -19,6 +21,9 @@ public class FollowTransactionRecordServiceImpl implements FollowTransactionReco
 	
 	@Autowired
 	private FollowTransactionRecordDOMapper followTransactionRecordDOMapper;
+	
+    @Autowired
+    private TransactionProperties transactionProperties;
 
 	/**
 	 * 判断MQ消息是否被成功消费
@@ -53,6 +58,14 @@ public class FollowTransactionRecordServiceImpl implements FollowTransactionReco
 		followTransactionRecordDO.setTopic(topic);
 		followTransactionRecordDO.setGmtCreate(new Date());
 		followTransactionRecordDOMapper.insert(followTransactionRecordDO);
+		
+		// 删除指定时间之前已经处理的主事务消息
+		FollowTransactionRecordDOExample example = new FollowTransactionRecordDOExample();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR,  - transactionProperties.getDeleteRecordTime());
+        example.createCriteria().andGmtCreateLessThanOrEqualTo(calendar.getTime());
+        followTransactionRecordDOMapper.deleteByExample(example);
 	} 
 	
 }

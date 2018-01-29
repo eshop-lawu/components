@@ -14,8 +14,15 @@ public class TransactionProperties {
     
     /**
      * MQ消息有效时间(单位:毫秒)
+     * 60秒
      */
     private long messageValidTime = 60 * 1000L;
+    
+    /**
+     * 事务记录删除时间(单位:天)
+     * 60天两个月
+     */
+    private Integer deleteRecordTime = 60;
     
     private TransactionJob job = new TransactionJob();
 
@@ -27,6 +34,14 @@ public class TransactionProperties {
         this.messageValidTime = messageValidTime;
     }
     
+    public Integer getDeleteRecordTime() {
+        return deleteRecordTime;
+    }
+
+    public void setDeleteRecordTime(Integer deleteRecordTime) {
+        this.deleteRecordTime = deleteRecordTime;
+    }
+
     public TransactionJob getJob() {
         return job;
     }

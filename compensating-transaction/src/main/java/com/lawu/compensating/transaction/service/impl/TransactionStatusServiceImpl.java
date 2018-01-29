@@ -1,6 +1,7 @@
 package com.lawu.compensating.transaction.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.lawu.compensating.transaction.bo.TransactionRecordBO;
 import com.lawu.compensating.transaction.domain.TransactionRecordDO;
 import com.lawu.compensating.transaction.domain.TransactionRecordDOExample;
 import com.lawu.compensating.transaction.mapper.TransactionRecordDOMapper;
+import com.lawu.compensating.transaction.properties.TransactionProperties;
 
 /**
  * @author Leach
@@ -21,6 +23,9 @@ public class TransactionStatusServiceImpl implements TransactionStatusService {
 
 	@Autowired
 	private TransactionRecordDOMapper transactionRecordDOMapper;
+	
+    @Autowired
+    private TransactionProperties transactionProperties;
 
 	@Transactional
 	@Override
@@ -34,29 +39,6 @@ public class TransactionStatusServiceImpl implements TransactionStatusService {
 		transactionRecord.setGmtCreate(new Date());
 		transactionRecord.setTimes(0L);
 		transactionRecordDOMapper.insertSelective(transactionRecord);
-		/*
-        // 查找数据库是否有相同记录存在
-        TransactionRecordDOExample example = new TransactionRecordDOExample();
-        example.createCriteria().andTypeEqualTo(type).andRelateIdEqualTo(relateId);
-        List<TransactionRecordDO> list = transactionRecordDOMapper.selectByExample(example);
-        if (list == null || list.isEmpty()) {
-            // 如果记录存在，保存一条新的记录
-            transactionRecord.setIsProcessed(false);
-            transactionRecord.setRelateId(relateId);
-            transactionRecord.setType(type);
-            transactionRecord.setGmtModified(new Date());
-            transactionRecord.setGmtCreate(new Date());
-            transactionRecord.setTimes(0L);
-            transactionRecordDOMapper.insertSelective(transactionRecord);
-        } else {
-            // 如果记录存在，更新以前的旧记录
-            transactionRecord.setId(list.get(0).getId());
-            transactionRecord.setIsProcessed(false);
-            transactionRecord.setTimes(0L);
-            transactionRecord.setGmtModified(new Date());
-            transactionRecordDOMapper.updateByPrimaryKeySelective(transactionRecord);
-        }
-        */
 		return transactionRecord.getId();
 	}
 
@@ -65,15 +47,27 @@ public class TransactionStatusServiceImpl implements TransactionStatusService {
 	public Long success(Long transactionId) {
 		TransactionRecordDO transactionRecord = transactionRecordDOMapper.selectByPrimaryKey(transactionId);
 		if (transactionRecord == null) {
-			return null;
+			throw new RuntimeException("transactionId is null");
 		}
 		// 是否处理完成
 		if (transactionRecord.getIsProcessed()) {
 			return null;
 		}
-		transactionRecord.setIsProcessed(true);
-		transactionRecord.setGmtModified(new Date());
-		transactionRecordDOMapper.updateByPrimaryKey(transactionRecord);
+		
+		TransactionRecordDO transactionRecordUpdateDO = new TransactionRecordDO();
+		transactionRecordUpdateDO.setId(transactionRecord.getId());
+		transactionRecordUpdateDO.setIsProcessed(true);
+		transactionRecordUpdateDO.setGmtModified(new Date());
+		transactionRecordDOMapper.updateByPrimaryKeySelective(transactionRecordUpdateDO);
+		
+		// 删除指定时间之前已经处理的主事务消息
+		TransactionRecordDOExample example = new TransactionRecordDOExample();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DAY_OF_YEAR,  - transactionProperties.getDeleteRecordTime());
+		example.createCriteria().andIsProcessedEqualTo(true).andGmtCreateLessThanOrEqualTo(calendar.getTime());
+		transactionRecordDOMapper.deleteByExample(example);
+		
 		return transactionRecord.getRelateId();
 	}
 
