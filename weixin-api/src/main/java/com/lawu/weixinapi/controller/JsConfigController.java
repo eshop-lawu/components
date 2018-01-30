@@ -30,7 +30,7 @@ public class JsConfigController extends BaseController {
     @Autowired
     private WxMpService wxMpService;
 
-    @CrossOrigin({"http://test.lovelawu.com:12680", "http://pre.lovelawu.com"})
+    @CrossOrigin({"http://test.lovelawu.com:12680", "http://pre.lovelawu.com", "https://member.edian.shop", "https://merchant.edian.shop", "https://agent.edian.shop"})
     @RequestMapping(value = "get", method = RequestMethod.GET)
     public Result<JsConfigDTO> get(String url) {
 
