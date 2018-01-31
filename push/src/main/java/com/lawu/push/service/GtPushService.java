@@ -8,20 +8,22 @@ public interface GtPushService {
 
 
     /**
+     * 推送单个用户
+     *
      * @param cid      个推CID
      * @param title    推送标题
      * @param contents 推送内容 json格式
-     * @param prefix   用户前缀 M 用户 B 商家
      * @return OK 成功
      */
-    String pushMessageToSingle(String cid, String title, String contents, String prefix);
+    String pushMessageToSingle(String cid, String title, String contents);
 
     /**
+     * 推送所有用户
+     *
      * @param title    推送标题
      * @param contents 推送内容 json格式
-     * @param prefix   用户前缀 M 用户 B 商家
      * @return OK 成功
      */
-    String pushMessageToAll(String title, String contents, String prefix);
+    String pushMessageToAll(String title, String contents);
 
 }

@@ -44,7 +44,7 @@ public class MerchantPushServiceImpl implements GtPushService, InitializingBean 
     private IGtPush merchantPush;
 
     @Override
-    public String pushMessageToSingle(String cid, String title, String contents, String prefix) {
+    public String pushMessageToSingle(String cid, String title, String contents) {
         SingleMessage message = new SingleMessage();
         message.setData(PushCommonClient.getTemplate(merchantTemplate, title, contents));
         message.setOffline(true);
@@ -73,7 +73,7 @@ public class MerchantPushServiceImpl implements GtPushService, InitializingBean 
     }
 
     @Override
-    public String pushMessageToAll(String title, String contents, String prefix) {
+    public String pushMessageToAll(String title, String contents) {
         AppMessage message = new AppMessage();
         message.setOffline(true);
         // 离线有效时间，单位为毫秒，可选
