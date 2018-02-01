@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Service;
 
 import com.gexin.rp.sdk.base.IPushResult;
 import com.gexin.rp.sdk.base.impl.AppMessage;
@@ -21,9 +20,9 @@ import com.lawu.push.service.GtPushService;
  * @author zhangyong
  * @date 2018/1/31.
  */
-@Service
-public class MerchantPushServiceImpl implements GtPushService, InitializingBean {
-    private static Logger logger = LoggerFactory.getLogger(MerchantPushServiceImpl.class);
+public class PushServiceImpl implements GtPushService, InitializingBean {
+
+    private static Logger logger = LoggerFactory.getLogger(PushServiceImpl.class);
     /**
      * 毫秒 24小时  24 * 3600 * 1000
      */
@@ -33,34 +32,34 @@ public class MerchantPushServiceImpl implements GtPushService, InitializingBean 
 
     private String gtHost;
 
-    private String merchantAppId;
+    private String appId;
 
-    private String merchantAppKey;
+    private String appKey;
 
-    private String merchantMasterSecret;
+    private String masterSecret;
 
-    private TransmissionTemplate merchantTemplate;
+    private TransmissionTemplate template;
 
-    private IGtPush merchantPush;
+    private IGtPush push;
 
     @Override
     public String pushMessageToSingle(String cid, String title, String contents) {
         SingleMessage message = new SingleMessage();
-        message.setData(PushCommonClient.getTemplate(merchantTemplate, title, contents));
+        message.setData(PushCommonClient.getTemplate(template, title, contents));
         message.setOffline(true);
-        // 可选，1为wifi，0为不限制网络环境。根据手机处于的网络情况，决定是否下发
-        message.setPushNetWorkType(0);
         // 离线有效时间，单位为毫秒，可选
         message.setOfflineExpireTime(OFFLINE_EXPIRE_TIME);
+        // 可选，1为wifi，0为不限制网络环境。根据手机处于的网络情况，决定是否下发
+        message.setPushNetWorkType(0);
         Target target = new Target();
         target.setClientId(cid);
-        target.setAppId(merchantAppId);
+        target.setAppId(appId);
         IPushResult ret;
         try {
-            ret = merchantPush.pushMessageToSingle(message, target);
+            ret = push.pushMessageToSingle(message, target);
             if (ret != null) {
                 String result = (String) ret.getResponse().get(RESULT);
-                logger.info("gtPush result:result {}", result);
+                logger.info("gtPush result:result{}", result);
                 return result;
             } else {
                 logger.info("gtPush 推送失败:{}", "gtPush--服务器响应异常");
@@ -79,38 +78,39 @@ public class MerchantPushServiceImpl implements GtPushService, InitializingBean 
         // 离线有效时间，单位为毫秒，可选
         message.setOfflineExpireTime(OFFLINE_EXPIRE_TIME);
         // 推送给App的目标用户需要满足的条件
-        message.setData(PushCommonClient.getTemplate(merchantTemplate, title, contents));
+        message.setData(PushCommonClient.getTemplate(template, title, contents));
         List<String> appIdList = new ArrayList<>();
-        appIdList.add(merchantAppId);
+        appIdList.add(appId);
         message.setAppIdList(appIdList);
-        IPushResult ret = merchantPush.pushMessageToApp(message);
+        IPushResult ret = push.pushMessageToApp(message);
         String result = (String) ret.getResponse().get(RESULT);
-        logger.info("push-all-member result{}", result);
+        logger.info("push-all-member result {}", result);
         return result;
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        merchantTemplate = new TransmissionTemplate();
-        merchantTemplate.setAppkey(merchantAppKey);
-        merchantTemplate.setAppId(merchantAppId);
-        merchantTemplate.setTransmissionType(2);
-        merchantPush = new IGtPush(gtHost, merchantAppKey, merchantMasterSecret);
+        template = new TransmissionTemplate();
+        template.setAppId(appId);
+        template.setAppkey(appKey);
+        template.setTransmissionType(2);
+
+        push = new IGtPush(gtHost, appKey, masterSecret);
     }
 
     public void setGtHost(String gtHost) {
         this.gtHost = gtHost;
     }
 
-    public void setMerchantAppId(String merchantAppId) {
-        this.merchantAppId = merchantAppId;
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
-    public void setMerchantAppKey(String merchantAppKey) {
-        this.merchantAppKey = merchantAppKey;
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 
-    public void setMerchantMasterSecret(String merchantMasterSecret) {
-        this.merchantMasterSecret = merchantMasterSecret;
+    public void setMasterSecret(String masterSecret) {
+        this.masterSecret = masterSecret;
     }
 }

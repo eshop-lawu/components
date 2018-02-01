@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+       xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.dangdang.com/schema/ddframe/reg http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+       http://www.dangdang.com/schema/ddframe/job http://www.dangdang.com/schema/ddframe/job/job.xsd">
+
+    <!-- push-->
+    <bean id="pushServiceImpl" class="com.lawu.push.service.impl.PushServiceImpl">
+        <property name="appId" value="TQd0dTZC8b7Az2zwH4wPk1"/>
+        <property name="appKey" value="vi1F0oUgRYAaxZ3xtPeVUA"/>
+        <property name="gtHost" value="http://sdk.open.api.igexin.com/apiex.htm"/>
+        <property name="masterSecret" value="5f23soSbuN76qvvxOZipc1"/>
+    </bean>
+
+</beans>
