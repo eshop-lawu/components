@@ -6,6 +6,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lawu.compensating.transaction.Notification;
@@ -14,6 +15,7 @@ import com.lawu.compensating.transaction.annotation.CompensatingTransactionFollo
 import com.lawu.compensating.transaction.properties.TransactionProperties;
 import com.lawu.compensating.transaction.service.FollowTransactionRecordService;
 import com.lawu.compensating.transaction.service.TransactionFollowService;
+import com.lawu.mq.exception.NegligibleException;
 import com.lawu.mq.message.MessageProducerService;
 import com.lawu.synchronization.lock.service.LockService;
 
@@ -26,12 +28,9 @@ import com.lawu.synchronization.lock.service.LockService;
 public abstract class AbstractTransactionFollowService<N extends Notification, R extends Reply> implements TransactionFollowService<N, R> {
 	
 	private static Logger logger = LoggerFactory.getLogger(AbstractTransactionFollowService.class);
-	
+    CompensatingTransactionFollow annotation = this.getClass().getAnnotation(CompensatingTransactionFollow.class);
     @Autowired
     private MessageProducerService messageProducerService;
-
-    CompensatingTransactionFollow annotation = this.getClass().getAnnotation(CompensatingTransactionFollow.class);
-
     private String topic = annotation.topic();
 
     private String tags = annotation.tags() + "-reply";
@@ -78,7 +77,9 @@ public abstract class AbstractTransactionFollowService<N extends Notification, R
     		// 只有事务全部执行成功，才会发送回复消息
             reply.setTransactionId(notification.getTransactionId());
             sendCallback(reply);
-    	} catch (Exception e) {
+    	} catch (DuplicateKeyException e) {
+		    throw new NegligibleException(e);
+        } catch (Exception e) {
             logger.error("事务执行异常", e);
             // 抛出异常，回滚事务
             throw new RuntimeException(e);

@@ -16,6 +16,7 @@ import com.alibaba.rocketmq.client.consumer.listener.MessageListenerConcurrently
 import com.alibaba.rocketmq.common.message.MessageExt;
 import com.lawu.mq.consumer.CustomConsumer;
 import com.lawu.mq.consumer.CustomConsumerRegister;
+import com.lawu.mq.exception.NegligibleException;
 import com.lawu.mq.utils.ByteUtil;
 
 /**
@@ -47,12 +48,16 @@ public abstract class AbstractMessageConsumerListener implements MessageListener
                 logger.debug("Message content: {},{}", messageExt.getMsgId(), JSONObject.toJSONString(object));
             } catch(InvalidClassException e) {
             	logger.warn("Message type does not match", e);
-                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+                continue;
             } catch (IOException | ClassNotFoundException e) {
                 logger.error("Failure consumption, later try to consume", e);
                 return ConsumeConcurrentlyStatus.RECONSUME_LATER;
             } catch (JSONException e) {
-                logger.error("Object To JSON String Failure", e);
+                // for logger
+                logger.warn("Object To JSON String Failure", e);
+            } catch (NegligibleException e) {
+                logger.warn("Message has be deal");
+                continue;
             }
             
             if (customConsumerRegister != null) {
