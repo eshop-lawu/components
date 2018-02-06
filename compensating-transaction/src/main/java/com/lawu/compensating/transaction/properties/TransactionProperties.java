@@ -24,6 +24,11 @@ public class TransactionProperties {
      */
     private Integer deleteRecordTime = 60;
     
+    /**
+     * 执行Sql语句
+     */
+    private Boolean executeSqlStatement = false;
+    
     private TransactionJob job = new TransactionJob();
 
     public long getMessageValidTime() {
@@ -40,6 +45,14 @@ public class TransactionProperties {
 
     public void setDeleteRecordTime(Integer deleteRecordTime) {
         this.deleteRecordTime = deleteRecordTime;
+    }
+    
+    public Boolean getExecuteSqlStatement() {
+        return executeSqlStatement;
+    }
+
+    public void setExecuteSqlStatement(Boolean executeSqlStatement) {
+        this.executeSqlStatement = executeSqlStatement;
     }
 
     public TransactionJob getJob() {

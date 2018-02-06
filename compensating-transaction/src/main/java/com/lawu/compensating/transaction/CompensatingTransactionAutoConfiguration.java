@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -50,34 +52,16 @@ import com.lawu.compensating.transaction.service.impl.TransactionStatusServiceIm
 @Import({TransactionInitializing.class, TransactionScheduledJobAutoConfiguration.class})
 public class CompensatingTransactionAutoConfiguration {
     
+    private static final Logger log = LoggerFactory.getLogger(CompensatingTransactionAutoConfiguration.class);
+    
     @Bean
     public CacheService cacheService() {
         return new CacheServiceImpl();
     }
     
     @Bean
-    public FollowTransactionRecordService followTransactionRecordService(DataSource dataSource, @Value("classpath:sql/follow_transaction_record.sql") Resource resource) throws IOException, SQLException {
-        StringBuilder sql = new StringBuilder();
-        try (InputStream in = resource.getInputStream()) {
-            byte[] tempbytes = new byte[1024];
-            int len = 0;
-            while ((len = in.read(tempbytes)) != -1) {
-                sql.append(new String(tempbytes, 0, len, "UTF-8"));
-            }
-        }
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
-            preparedStatement.execute();
-        }
-        return new FollowTransactionRecordServiceImpl();
-    }
-    
-    @ConditionalOnProperty(name = {"lawu.compensating-transaction.job.enabled"}, havingValue="true", matchIfMissing = false)
-    @Configuration
-    public static class TransactionScheduledJobAutoConfiguration {
-        
-        @Bean
-        public TransactionStatusService transactionStatusService(DataSource dataSource, @Value("classpath:sql/transaction_record.sql") Resource resource) throws IOException, SQLException {
+    public FollowTransactionRecordService followTransactionRecordService(DataSource dataSource, @Value("classpath:sql/follow_transaction_record.sql") Resource resource, TransactionProperties properties) throws IOException, SQLException {
+        if (properties.getExecuteSqlStatement()) {
             StringBuilder sql = new StringBuilder();
             try (InputStream in = resource.getInputStream()) {
                 byte[] tempbytes = new byte[1024];
@@ -89,6 +73,37 @@ public class CompensatingTransactionAutoConfiguration {
             try (Connection conn = dataSource.getConnection();
                     PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
                 preparedStatement.execute();
+            } catch (Exception e) {
+                log.warn("follow_transaction_record.sql 执行异常 e:{}", e.getMessage());
+            }
+        }
+        return new FollowTransactionRecordServiceImpl();
+    }
+    
+    @ConditionalOnProperty(name = {"lawu.compensating-transaction.job.enabled"}, havingValue="true", matchIfMissing = false)
+    @Configuration
+    public static class TransactionScheduledJobAutoConfiguration {
+        
+        private static final Logger log = LoggerFactory
+                .getLogger(CompensatingTransactionAutoConfiguration.TransactionScheduledJobAutoConfiguration.class);
+        
+        @Bean
+        public TransactionStatusService transactionStatusService(DataSource dataSource, @Value("classpath:sql/transaction_record.sql") Resource resource, TransactionProperties properties) throws IOException, SQLException {
+            if (properties.getExecuteSqlStatement()) {
+                StringBuilder sql = new StringBuilder();
+                try (InputStream in = resource.getInputStream()) {
+                    byte[] tempbytes = new byte[1024];
+                    int len = 0;
+                    while ((len = in.read(tempbytes)) != -1) {
+                        sql.append(new String(tempbytes, 0, len, "UTF-8"));
+                    }
+                }
+                try (Connection conn = dataSource.getConnection();
+                        PreparedStatement preparedStatement = conn.prepareStatement(sql.toString())) {
+                    preparedStatement.execute();
+                } catch (Exception e) {
+                    log.warn("transaction_record.sql 执行异常 e:{}", e.getMessage());
+                }
             }
             return new TransactionStatusServiceImpl();
         }

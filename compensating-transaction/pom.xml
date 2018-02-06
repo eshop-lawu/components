@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>compensating-transaction</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
     
     <properties>
         <elastic.job.version>2.1.5</elastic.job.version>
