@@ -1,7 +1,6 @@
 package com.lawu.compensating.transaction.service.impl;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import com.lawu.compensating.transaction.bo.TransactionRecordBO;
 import com.lawu.compensating.transaction.domain.TransactionRecordDO;
 import com.lawu.compensating.transaction.domain.TransactionRecordDOExample;
 import com.lawu.compensating.transaction.mapper.TransactionRecordDOMapper;
-import com.lawu.compensating.transaction.properties.TransactionProperties;
 
 /**
  * @author Leach
@@ -24,8 +22,8 @@ public class TransactionStatusServiceImpl implements TransactionStatusService {
 	@Autowired
 	private TransactionRecordDOMapper transactionRecordDOMapper;
 	
-    @Autowired
-    private TransactionProperties transactionProperties;
+//    @Autowired
+//    private TransactionProperties transactionProperties;
 
 	@Transactional
 	@Override
@@ -60,6 +58,8 @@ public class TransactionStatusServiceImpl implements TransactionStatusService {
 		transactionRecordUpdateDO.setGmtModified(new Date());
 		transactionRecordDOMapper.updateByPrimaryKeySelective(transactionRecordUpdateDO);
 		
+		/*
+		TODO 改为定时任务执行,因为每次消费都去执行,增加数据库的压力
 		// 删除指定时间之前已经处理的主事务消息
 		TransactionRecordDOExample example = new TransactionRecordDOExample();
         Calendar calendar = Calendar.getInstance();
@@ -67,6 +67,7 @@ public class TransactionStatusServiceImpl implements TransactionStatusService {
         calendar.add(Calendar.DAY_OF_YEAR,  - transactionProperties.getDeleteRecordTime());
 		example.createCriteria().andIsProcessedEqualTo(true).andGmtCreateLessThanOrEqualTo(calendar.getTime());
 		transactionRecordDOMapper.deleteByExample(example);
+		*/
 		
 		return transactionRecord.getRelateId();
 	}
