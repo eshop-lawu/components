@@ -61,7 +61,12 @@ public class BaseSolrServiceImpl<T, ID extends Serializable> implements BaseSolr
         SolrDocumentList results = queryResponse.getResults();
         long numFound = results == null ? 0 : results.getNumFound();
         Float maxScore = results == null ? null : results.getMaxScore();
-        Pageable pageable = new SolrPageRequest(solrQuery.getStart(), solrQuery.getRows());
+        Pageable pageable = null;
+        if (solrQuery.getStart() != null && solrQuery.getRows() != null) {
+            pageable = new SolrPageRequest(solrQuery.getStart(), solrQuery.getRows());
+        } else {
+            pageable = new SolrPageRequest(0, 10);
+        }
         SolrResultPage<T> page = new SolrResultPage<T>(beans, pageable, numFound, maxScore);
         return page;
     }
