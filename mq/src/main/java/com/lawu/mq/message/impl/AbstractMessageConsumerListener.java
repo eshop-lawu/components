@@ -45,7 +45,7 @@ public abstract class AbstractMessageConsumerListener implements MessageListener
                  *  打印消息对象
                  *  放入try-catch代码块，防止对象转换json报错
                  */
-                logger.debug("Message content: {},{}", messageExt.getMsgId(), JSONObject.toJSONString(object));
+                logger.info("Message content: {},{}", messageExt.getMsgId(), JSONObject.toJSONString(object));
             } catch(InvalidClassException e) {
             	logger.warn("Message type does not match", e);
                 continue;
