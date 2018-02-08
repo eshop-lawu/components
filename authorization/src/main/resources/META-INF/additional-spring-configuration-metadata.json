@@ -1,0 +1,7 @@
+{"properties": [
+  {
+    "name": "com.lawu.authorization-impl.token-cache.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用token缓存"
+  }
+]}
