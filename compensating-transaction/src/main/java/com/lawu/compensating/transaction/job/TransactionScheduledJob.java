@@ -13,9 +13,9 @@ import org.springframework.context.ApplicationContextAware;
 
 import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
-import com.lawu.compensating.transaction.TransactionMainService;
 import com.lawu.compensating.transaction.annotation.CompensatingTransactionMain;
 import com.lawu.compensating.transaction.service.CacheService;
+import com.lawu.compensating.transaction.service.TransactionMainService;
 
 /**
  * @author Leach

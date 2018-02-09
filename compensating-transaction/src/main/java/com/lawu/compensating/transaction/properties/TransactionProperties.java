@@ -20,9 +20,9 @@ public class TransactionProperties {
     
     /**
      * 事务记录删除时间(单位:天)
-     * 60天两个月
+     * 30天两个月
      */
-    private Integer deleteRecordTime = 60;
+    private Integer deleteRecordTime = 30;
     
     /**
      * 执行Sql语句

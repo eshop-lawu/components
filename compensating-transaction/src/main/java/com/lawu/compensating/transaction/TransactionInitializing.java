@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.lawu.compensating.transaction.annotation.CompensatingTransactionFollow;
 import com.lawu.compensating.transaction.annotation.CompensatingTransactionMain;
 import com.lawu.compensating.transaction.service.TransactionFollowService;
+import com.lawu.compensating.transaction.service.TransactionMainService;
 import com.lawu.mq.consumer.CustomConsumer;
 import com.lawu.mq.consumer.CustomConsumerRegister;
 

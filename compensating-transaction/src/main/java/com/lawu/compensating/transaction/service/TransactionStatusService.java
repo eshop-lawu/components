@@ -1,5 +1,6 @@
-package com.lawu.compensating.transaction;
+package com.lawu.compensating.transaction.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.lawu.compensating.transaction.bo.TransactionRecordBO;
@@ -43,4 +44,23 @@ public interface TransactionStatusService {
      * @author Sunny
      */
     void updateTimes(Long transactionId, Long times);
+    
+    /**
+     * 删除过期数据
+     * 改为定时任务执行,因为每次消费都去执行,增加数据库的压力
+     * @author jiangxinjun
+     * @createDate 2018年2月8日
+     * @updateDate 2018年2月8日
+     */
+    void deleteExpiredRecords();
+    
+    /**
+     * 根据给定日期删除事务记录
+     * @param deleteRecordDate
+     * @return
+     * @author jiangxinjun
+     * @createDate 2018年2月8日
+     * @updateDate 2018年2月8日
+     */
+    //int deleteExpiredRecords(Date deleteRecordDate);
 }

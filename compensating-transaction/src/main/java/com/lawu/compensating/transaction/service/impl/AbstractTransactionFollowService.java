@@ -1,4 +1,4 @@
-package com.lawu.compensating.transaction.impl;
+package com.lawu.compensating.transaction.service.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Date;

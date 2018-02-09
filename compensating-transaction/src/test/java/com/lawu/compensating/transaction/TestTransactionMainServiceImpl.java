@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lawu.compensating.transaction.annotation.CompensatingTransactionMain;
 import com.lawu.compensating.transaction.domain.ShoppingOrderDO;
-import com.lawu.compensating.transaction.impl.AbstractTransactionMainService;
 import com.lawu.compensating.transaction.mapper.ShoppingOrderDOMapper;
+import com.lawu.compensating.transaction.service.impl.AbstractTransactionMainService;
 
 /**
  * 
@@ -31,7 +31,7 @@ public class TestTransactionMainServiceImpl extends AbstractTransactionMainServi
         return notification;
     }
     
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void afterSuccess(Long shoppingOrderId, TestReply reply) {
         ShoppingOrderDO shoppingOrderUpdate = new ShoppingOrderDO();

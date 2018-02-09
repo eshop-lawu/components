@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS `transaction_record`
   `gmt_modified` datetime(0) NOT NULL COMMENT '修改时间',
   `gmt_create` datetime(0) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `uk_relate_id_type`(`relate_id`, `type`)
+  UNIQUE INDEX `uk_type_relate_id`(`type`, `relate_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 ROW_FORMAT = Dynamic;

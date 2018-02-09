@@ -1,13 +1,18 @@
 package com.lawu.compensating.transaction.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lawu.compensating.transaction.domain.FollowTransactionRecordDO;
 import com.lawu.compensating.transaction.domain.FollowTransactionRecordDOExample;
 import com.lawu.compensating.transaction.mapper.FollowTransactionRecordDOMapper;
+import com.lawu.compensating.transaction.mapper.extend.FollowTransactionRecordDOExtendMapper;
+import com.lawu.compensating.transaction.properties.TransactionProperties;
 import com.lawu.compensating.transaction.service.FollowTransactionRecordService;
 
 /**
@@ -16,57 +21,76 @@ import com.lawu.compensating.transaction.service.FollowTransactionRecordService;
  * @date 2017年5月18日
  */
 public class FollowTransactionRecordServiceImpl implements FollowTransactionRecordService {
-	
-	@Autowired
-	private FollowTransactionRecordDOMapper followTransactionRecordDOMapper;
-	
-//    @Autowired
-//    private TransactionProperties transactionProperties;
+    
+    private static final Logger log = LoggerFactory.getLogger(FollowTransactionRecordServiceImpl.class);
 
-	/**
-	 * 判断MQ消息是否被成功消费
-	 * 
-	 * @param topic MQ消息的topic
-	 * @param transationId 事务id
-	 * @return
-	 * @author Sunny
-	 * @date 2017年6月1日
-	 */
-	@Override
-	public boolean isExist(String topic, Long transationId) {
-		FollowTransactionRecordDOExample example = new FollowTransactionRecordDOExample();
-		example.createCriteria().andTopicEqualTo(topic).andTransationIdEqualTo(transationId);
-		followTransactionRecordDOMapper.countByExample(example);
-		return followTransactionRecordDOMapper.countByExample(example) > 0 ? true : false;
-	}
+    @Autowired
+    private FollowTransactionRecordServiceImpl followTransactionRecordServiceImpl;
+    
+    @Autowired
+    private FollowTransactionRecordDOMapper followTransactionRecordDOMapper;
 
-	/**
-	 * 消息被消费成功，保存一条记录
-	 * 
-	 * @param topic MQ消息的topic
-	 * @param transationId 事务id
-	 * @author Sunny
-	 * @date 2017年6月1日
-	 */
-	@Transactional
-	@Override
-	public void consumptionSuccessful(String topic, Long transationId) {
-		FollowTransactionRecordDO followTransactionRecordDO = new FollowTransactionRecordDO();
-		followTransactionRecordDO.setTransationId(transationId);
-		followTransactionRecordDO.setTopic(topic);
-		followTransactionRecordDO.setGmtCreate(new Date());
-		followTransactionRecordDOMapper.insert(followTransactionRecordDO);
-		
-	    /*
-        TODO 改为定时任务执行,因为每次消费都去执行,增加数据库的压力
-		// 删除指定时间之前已经处理的主事务消息
-		FollowTransactionRecordDOExample example = new FollowTransactionRecordDOExample();
+    @Autowired
+    private FollowTransactionRecordDOExtendMapper followTransactionRecordDOExtendMapper;
+
+    @Autowired
+    private TransactionProperties transactionProperties;
+
+    @Override
+    public boolean isExist(String topic, Long transationId) {
+        FollowTransactionRecordDOExample example = new FollowTransactionRecordDOExample();
+        example.createCriteria().andTopicEqualTo(topic).andTransationIdEqualTo(transationId);
+        followTransactionRecordDOMapper.countByExample(example);
+        return followTransactionRecordDOMapper.countByExample(example) > 0 ? true : false;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void consumptionSuccessful(String topic, Long transationId) {
+        FollowTransactionRecordDO followTransactionRecordDO = new FollowTransactionRecordDO();
+        followTransactionRecordDO.setTransationId(transationId);
+        followTransactionRecordDO.setTopic(topic);
+        followTransactionRecordDO.setGmtCreate(new Date());
+        followTransactionRecordDOMapper.insert(followTransactionRecordDO);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteExpiredRecords() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.DAY_OF_YEAR,  - transactionProperties.getDeleteRecordTime());
-        example.createCriteria().andGmtCreateLessThanOrEqualTo(calendar.getTime());
-        followTransactionRecordDOMapper.deleteByExample(example);
-        */
-	} 
-	
+        // 设置时分秒为0
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DAY_OF_YEAR, -transactionProperties.getDeleteRecordTime());
+
+        // 执行错误次数
+        int errorCount = 0;
+        // 循环删除过期数据
+        while (true) {
+            if (errorCount >= 3) {
+                break;
+            }
+            /*
+             *  根据受影响的行数来判断以及异常次数
+             *  是否结束循环
+             */
+            try {
+                int affectedRows = followTransactionRecordServiceImpl.deleteExpiredRecords(calendar.getTime());
+                if (affectedRows == 0) {
+                    break;
+                }
+            } catch (Exception e) {
+                errorCount++;
+                log.error("删除主事务记录异常", e);
+            }
+        }
+    }
+    
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteExpiredRecords(Date deleteRecordDate) {
+        return followTransactionRecordDOExtendMapper.deleteExpiredRecords(deleteRecordDate);
+    }
 }

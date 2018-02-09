@@ -1,4 +1,4 @@
-package com.lawu.compensating.transaction.impl;
+package com.lawu.compensating.transaction.service.impl;
 
 import java.util.List;
 
@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lawu.compensating.transaction.Notification;
 import com.lawu.compensating.transaction.Reply;
-import com.lawu.compensating.transaction.TransactionMainService;
-import com.lawu.compensating.transaction.TransactionStatusService;
 import com.lawu.compensating.transaction.annotation.CompensatingTransactionMain;
 import com.lawu.compensating.transaction.bo.TransactionRecordBO;
 import com.lawu.compensating.transaction.properties.TransactionProperties;
 import com.lawu.compensating.transaction.properties.TransactionProperties.TransactionJob;
+import com.lawu.compensating.transaction.service.TransactionMainService;
+import com.lawu.compensating.transaction.service.TransactionStatusService;
 import com.lawu.mq.message.MessageProducerService;
 
 /**

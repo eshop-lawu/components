@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lawu.compensating.transaction.annotation.CompensatingTransactionFollow;
 import com.lawu.compensating.transaction.domain.SeckillActivityProductDO;
-import com.lawu.compensating.transaction.impl.AbstractTransactionFollowService;
 import com.lawu.compensating.transaction.mapper.SeckillActivityProductDOMapper;
+import com.lawu.compensating.transaction.service.impl.AbstractTransactionFollowService;
 
 /**
  * 
@@ -23,7 +23,7 @@ public class TestTransactionFollowServiceImpl extends AbstractTransactionFollowS
     private SeckillActivityProductDOMapper seckillActivityProductDOMapper;
     
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void execute(TestNotification notification) {
 	    SeckillActivityProductDO seckillActivityProductDO = seckillActivityProductDOMapper.selectByPrimaryKey(notification.getSeckillActivityProductId());
 	    SeckillActivityProductDO seckillActivityProductUpdateDO = new SeckillActivityProductDO();

@@ -19,6 +19,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.io.Resource;
 
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
@@ -29,11 +31,11 @@ import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 import com.lawu.compensating.transaction.CompensatingTransactionAutoConfiguration.TransactionScheduledJobAutoConfiguration;
+import com.lawu.compensating.transaction.job.DeleteTransactionRecordJob;
 import com.lawu.compensating.transaction.job.TransactionScheduledJob;
 import com.lawu.compensating.transaction.properties.TransactionProperties;
 import com.lawu.compensating.transaction.properties.TransactionProperties.TransactionJob;
 import com.lawu.compensating.transaction.service.CacheService;
-import com.lawu.compensating.transaction.service.FollowTransactionRecordService;
 import com.lawu.compensating.transaction.service.impl.CacheServiceImpl;
 import com.lawu.compensating.transaction.service.impl.FollowTransactionRecordServiceImpl;
 import com.lawu.compensating.transaction.service.impl.TransactionStatusServiceImpl;
@@ -60,7 +62,8 @@ public class CompensatingTransactionAutoConfiguration {
     }
     
     @Bean
-    public FollowTransactionRecordService followTransactionRecordService(DataSource dataSource, @Value("classpath:sql/follow_transaction_record.sql") Resource resource, TransactionProperties properties) throws IOException, SQLException {
+    @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public FollowTransactionRecordServiceImpl followTransactionRecordService(DataSource dataSource, @Value("classpath:sql/follow_transaction_record.sql") Resource resource, TransactionProperties properties) throws IOException, SQLException {
         if (properties.getExecuteSqlStatement()) {
             StringBuilder sql = new StringBuilder();
             try (InputStream in = resource.getInputStream()) {
@@ -80,6 +83,29 @@ public class CompensatingTransactionAutoConfiguration {
         return new FollowTransactionRecordServiceImpl();
     }
     
+    @Bean
+    public SimpleJob deleteTransactionRecordJob() {
+        return new DeleteTransactionRecordJob(); 
+    }
+    
+    @Bean(initMethod = "init")
+    public JobScheduler deleteTransactionRecordJobScheduler(ApplicationContext applicationContext, TransactionProperties properties) {
+        ZookeeperRegistryCenter regCenter = null;
+        try {
+            regCenter = applicationContext.getBean(ZookeeperRegistryCenter.class);
+        } catch (NoSuchBeanDefinitionException e) {
+            return null;
+        }
+        TransactionJob transactionJob = properties.getJob();
+        SimpleJob deleteTransactionRecordJob = deleteTransactionRecordJob();
+        /*
+         * 执行时间每隔两天的凌晨执行
+         */
+        SimpleJobConfiguration jobCoreConfiguration = new SimpleJobConfiguration(JobCoreConfiguration.newBuilder("deleteTransactionRecordJob", "0 0 0 1/2 * ? *", 1).description("删除事物记录").build(), deleteTransactionRecordJob.getClass().getCanonicalName());
+        LiteJobConfiguration liteJobConfiguration = LiteJobConfiguration.newBuilder(jobCoreConfiguration).overwrite(true).disabled(transactionJob.getDisabled()).build();
+        return new SpringJobScheduler(deleteTransactionRecordJob(), regCenter, liteJobConfiguration);
+    }
+    
     @ConditionalOnProperty(name = {"lawu.compensating-transaction.job.enabled"}, havingValue="true", matchIfMissing = false)
     @Configuration
     public static class TransactionScheduledJobAutoConfiguration {
@@ -88,7 +114,8 @@ public class CompensatingTransactionAutoConfiguration {
                 .getLogger(CompensatingTransactionAutoConfiguration.TransactionScheduledJobAutoConfiguration.class);
         
         @Bean
-        public TransactionStatusService transactionStatusService(DataSource dataSource, @Value("classpath:sql/transaction_record.sql") Resource resource, TransactionProperties properties) throws IOException, SQLException {
+        @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+        public TransactionStatusServiceImpl transactionStatusService(DataSource dataSource, @Value("classpath:sql/transaction_record.sql") Resource resource, TransactionProperties properties) throws IOException, SQLException {
             if (properties.getExecuteSqlStatement()) {
                 StringBuilder sql = new StringBuilder();
                 try (InputStream in = resource.getInputStream()) {
@@ -114,7 +141,7 @@ public class CompensatingTransactionAutoConfiguration {
         }
         
         @Bean(initMethod = "init")
-        public JobScheduler simpleJobScheduler(ApplicationContext applicationContext, TransactionProperties properties) {
+        public JobScheduler transactionScheduledJobScheduler(ApplicationContext applicationContext, TransactionProperties properties) {
             ZookeeperRegistryCenter regCenter = null;
             try {
                 regCenter = applicationContext.getBean(ZookeeperRegistryCenter.class);
@@ -127,6 +154,7 @@ public class CompensatingTransactionAutoConfiguration {
             LiteJobConfiguration liteJobConfiguration = LiteJobConfiguration.newBuilder(jobCoreConfiguration).overwrite(true).disabled(transactionJob.getDisabled()).build();
             return new SpringJobScheduler(transactionScheduledJob(), regCenter, liteJobConfiguration);
         }
+        
     }
 
 }
