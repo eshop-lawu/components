@@ -55,22 +55,23 @@ public abstract class AbstractMessageConsumerListener implements MessageListener
             } catch (JSONException e) {
                 // for logger
                 logger.warn("Object To JSON String Failure", e);
-            } catch (NegligibleException e) {
-                logger.warn("Message has be deal");
-                continue;
             }
             
-            if (customConsumerRegister != null) {
-                CustomConsumer customConsumer = customConsumerRegister.getConsumer(topic, tags);
-
-                // 自定义优先
-                if (customConsumer != null) {
-                    customConsumer.consumeMessage(object, messageExt.getStoreTimestamp());
-                    continue;
+            // 捕捉自定义异常,标识这条消息已经处理,或者不处理
+            try {
+                if (customConsumerRegister != null) {
+                    CustomConsumer customConsumer = customConsumerRegister.getConsumer(topic, tags);
+    
+                    // 自定义优先
+                    if (customConsumer != null) {
+                        customConsumer.consumeMessage(object, messageExt.getStoreTimestamp());
+                        continue;
+                    }
                 }
+                consumeMessage(topic, tags, object);
+            } catch (NegligibleException e) {
+                logger.warn("Message has be deal");
             }
-
-            consumeMessage(topic, tags, object);
 
         }
         return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
