@@ -1,5 +1,6 @@
 package com.lawu.compensating.transaction.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,7 +16,9 @@ import com.lawu.compensating.transaction.properties.TransactionProperties;
 import com.lawu.compensating.transaction.properties.TransactionProperties.TransactionJob;
 import com.lawu.compensating.transaction.service.TransactionMainService;
 import com.lawu.compensating.transaction.service.TransactionStatusService;
+import com.lawu.compensating.transaction.util.SpringApplicationContextTool;
 import com.lawu.mq.message.MessageProducerService;
+import com.lawu.synchronization.lock.service.LockService;
 
 /**
  * 补偿性事务主逻辑服务抽象类
@@ -28,7 +31,10 @@ public abstract class AbstractTransactionMainService<N extends Notification, R e
 	
     @Autowired
     private MessageProducerService messageProducerService;
-
+    
+    @Autowired
+    private LockService lockService;
+    
     @Autowired
     private TransactionStatusService transactionStatusService;
     
@@ -42,6 +48,9 @@ public abstract class AbstractTransactionMainService<N extends Notification, R e
     private String topic = annotation.topic();
 
     private String tags = annotation.tags();
+    
+    @Autowired
+    private SpringApplicationContextTool springApplicationContextTool;
 
     /**
      * 查询需要发送到其他模块的数据
@@ -76,21 +85,50 @@ public abstract class AbstractTransactionMainService<N extends Notification, R e
         messageProducerService.sendMessage(topic, tags, notification);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public void receiveCallback(R reply, long storeTimestamp) {
+        if (new Date().getTime() - storeTimestamp >= transactionProperties.getMessageValidTime()) {
+            logger.info("回调消息已经失效");
+            return;
+        }
+        // 统一处理事务异常，手动捕捉异常，并且打印错误信息
+        StringBuilder locakName = new StringBuilder();
+        locakName.append(topic).append("_").append(annotation.tags() + "-reply").append("_").append(reply.getTransactionId());
+        // 从事务幂等性保证，表中存在记录，说明消息已经被成功消费，直接返回
+        if (transactionStatusService.isSuccess(reply.getTransactionId())) {
+            logger.info("回调消息已经被消费");
+            return;
+        }
+        // 如果没有获取到锁直接返回
+        if (!lockService.tryLock(locakName.toString())) {
+            logger.info("锁还未释放");
+            return;
+        }
+        try {
+            TransactionMainService<R> proxy = springApplicationContextTool.getProxy(this, TransactionMainService.class);
+            proxy.executeCallback(reply);
+        } catch (Exception e) {
+            logger.error("回调事务执行异常", e);
+            // 抛出异常，回滚事务
+            throw e;
+        } finally {
+            /*
+             * 事务执行完成释放锁 无论是否有异常都释放锁
+             */
+            lockService.unLock(locakName.toString());
+        }
+    }
+    
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void receiveCallback(R reply) {
-    	try {
-	        Long relateId = transactionStatusService.success(reply.getTransactionId());
-	        if (relateId == null) {
-	        	logger.info("回复消息已消费");
-	        	return;
-	        }
-	        afterSuccess(relateId, reply);
-    	} catch (Exception e) {
-    		logger.error("回调事务执行异常", e);
-    		// 抛出异常，回滚事务
-    		throw e;
-    	}
+    public void executeCallback(R reply) {
+        Long relateId = transactionStatusService.success(reply.getTransactionId());
+        if (relateId == null) {
+            logger.info("回调消息已消费");
+            return;
+        }
+        afterSuccess(relateId, reply);
     }
 
     @Override
@@ -110,10 +148,11 @@ public abstract class AbstractTransactionMainService<N extends Notification, R e
 	                throw new IllegalArgumentException("Can't find the notification by relateId: " + transactionRecordBO.getRelateId());
 	            }
 	            notification.setTransactionId(transactionRecordBO.getId());
-	            messageProducerService.sendMessage(topic, tags, notification);
 	            
 	            // 更新执行次数
-	            transactionStatusService.updateTimes(transactionRecordBO.getId(), transactionRecordBO.getTimes() + 1);
+                transactionStatusService.updateTimes(transactionRecordBO.getId(), transactionRecordBO.getTimes() + 1);
+	            
+	            messageProducerService.sendMessage(topic, tags, notification);
         	}
         }
     }

@@ -20,7 +20,7 @@ public interface TransactionMainService<R> {
      *
      * @param reply
      */
-    void receiveCallback(R reply);
+    void receiveCallback(R reply, long storeTimestamp);
 
     /**
      * 检查需要补偿的数据
@@ -36,4 +36,13 @@ public interface TransactionMainService<R> {
      * @author Sunny
      */
     String getTopic();
+    
+    /**
+     * 执行接收到的回复消息
+     * 
+     * @author jiangxinjun
+     * @createDate 2018年2月11日
+     * @updateDate 2018年2月11日
+     */
+    void executeCallback(R reply);
 }

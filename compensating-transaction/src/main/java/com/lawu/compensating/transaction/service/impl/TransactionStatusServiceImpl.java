@@ -138,4 +138,13 @@ public class TransactionStatusServiceImpl implements TransactionStatusService {
     public int deleteExpiredRecords(Date deleteRecordDate) {
         return transactionRecordDOExtendMapper.deleteExpiredRecords(deleteRecordDate);
     }
+
+    @Override
+    public Boolean isSuccess(Long transactionId) {
+        TransactionRecordDO transactionRecord = transactionRecordDOMapper.selectByPrimaryKey(transactionId);
+        if (transactionRecord == null) {
+            throw new RuntimeException("transactionId is null");
+        }
+        return transactionRecord.getIsProcessed();
+    }
 }

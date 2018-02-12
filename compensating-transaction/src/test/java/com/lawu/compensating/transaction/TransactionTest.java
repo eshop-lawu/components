@@ -43,7 +43,7 @@ public class TransactionTest {
     @BeforeClass
     public static void before() throws Exception {
         EmbeddedRedis.start();
-        EmbedZKServer.start();
+        //EmbedZKServer.start();
     }
     
     @AfterClass
@@ -65,7 +65,7 @@ public class TransactionTest {
     private TransactionRecordDOMapper transactionRecordDOMapper;
     
     @Autowired
-    private FollowTransactionRecordDOMapper followTransactionRecordDOMapper;
+    private FollowTransactionRecordDOMapper followTransactionRecordDOMapper; 
     
     @Ignore
     @Test

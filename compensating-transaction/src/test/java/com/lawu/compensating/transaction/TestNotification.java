@@ -10,10 +10,21 @@ public class TestNotification extends Notification {
     
     private static final long serialVersionUID = 4546170495366654211L;
     
+    /**
+     * 抢购商品id
+     */
     private Long seckillActivityProductId;
     
+    /**
+     * 数量
+     */
     private Integer quantity;
-
+    
+    /**
+     * 订单id
+     */
+    private Long shoppingOrderId;
+    
     public Long getSeckillActivityProductId() {
         return seckillActivityProductId;
     }
@@ -29,4 +40,13 @@ public class TestNotification extends Notification {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public Long getShoppingOrderId() {
+        return shoppingOrderId;
+    }
+
+    public void setShoppingOrderId(Long shoppingOrderId) {
+        this.shoppingOrderId = shoppingOrderId;
+    }
+    
 }

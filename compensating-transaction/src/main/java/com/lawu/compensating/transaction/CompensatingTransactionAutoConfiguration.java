@@ -39,6 +39,7 @@ import com.lawu.compensating.transaction.service.CacheService;
 import com.lawu.compensating.transaction.service.impl.CacheServiceImpl;
 import com.lawu.compensating.transaction.service.impl.FollowTransactionRecordServiceImpl;
 import com.lawu.compensating.transaction.service.impl.TransactionStatusServiceImpl;
+import com.lawu.compensating.transaction.util.SpringApplicationContextTool;
 
 /**
  * RocketMQ自动配置类
@@ -51,7 +52,7 @@ import com.lawu.compensating.transaction.service.impl.TransactionStatusServiceIm
 @MapperScan({"com.lawu.compensating.transaction.mapper"})
 @Configuration
 @EnableConfigurationProperties({ TransactionProperties.class })
-@Import({TransactionInitializing.class, TransactionScheduledJobAutoConfiguration.class})
+@Import({TransactionInitializing.class, TransactionScheduledJobAutoConfiguration.class, SpringApplicationContextTool.class})
 public class CompensatingTransactionAutoConfiguration {
     
     private static final Logger log = LoggerFactory.getLogger(CompensatingTransactionAutoConfiguration.class);

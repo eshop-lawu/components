@@ -69,7 +69,7 @@ public class TransactionInitializing implements InitializingBean, ApplicationCon
                 @SuppressWarnings("unchecked")
                 @Override
                 public void consumeMessage(Object message, long storeTimestamp) {
-                    finalTransactionMainService.receiveCallback(message);
+                    finalTransactionMainService.receiveCallback(message, storeTimestamp);
                 }
             });
 

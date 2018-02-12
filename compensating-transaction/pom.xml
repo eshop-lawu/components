@@ -10,11 +10,13 @@
     </parent>
 
     <artifactId>compensating-transaction</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.8-SNAPSHOT</version>
     
     <properties>
         <elastic.job.version>2.1.5</elastic.job.version>
         <curator-client.version>2.11.1</curator-client.version>
+        <mq.version>1.4-SNAPSHOT</mq.version>
+        <synchronization-lock.version>1.2-SNAPSHOT</synchronization-lock.version>
     </properties>
     
     <dependencies>
@@ -32,7 +34,7 @@
         <dependency>
             <groupId>com.lawu</groupId>
             <artifactId>synchronization-lock</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -113,6 +115,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>1.4.196</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -121,4 +124,13 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

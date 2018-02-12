@@ -20,6 +20,17 @@ public interface TransactionFollowService<N, R>{
      *
      * @param reply
      */
-    void sendCallback(R reply);
+    void sendCallback(N notification);
+    
+    
+    /**
+     * 执行接收到的消息
+     * 
+     * @param notification 接收的消息
+     * @author jiangxinjun
+     * @createDate 2018年2月11日
+     * @updateDate 2018年2月11日
+     */
+    void executeNotice(N notification);
 
 }

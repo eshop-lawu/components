@@ -20,8 +20,8 @@ import com.lawu.compensating.transaction.service.impl.AbstractTransactionFollowS
  * @updateDate 2017年12月25日
  */
 @Service
-@CompensatingTransactionFollow(topic = TransactionTest.TOPIC, tags = TransactionTest.TAGS)
-public class TestTransactionFollowServiceImpl extends AbstractTransactionFollowService<TestNotification, TestReply> {
+@CompensatingTransactionFollow(topic = TransactionTest.TOPIC, tags = TransactionTest.TAGS + "2")
+public class TestTransactionFollowServiceImpl2 extends AbstractTransactionFollowService<TestNotification, TestReply2> {
 
     @Autowired
     private SeckillActivityProductDOExtendMapper seckillActivityProductDOExtendMapper;
@@ -46,8 +46,8 @@ public class TestTransactionFollowServiceImpl extends AbstractTransactionFollowS
 	}
 	
 	@Override
-	public TestReply getReply(TestNotification notification) {
-	    TestReply testReply = new TestReply();
+	public TestReply2 getReply(TestNotification notification) {
+	    TestReply2 testReply = new TestReply2();
 	    ProductModelInventoryDOExample example = new ProductModelInventoryDOExample();
 	    example.createCriteria().andShoppingOrderIdEqualTo(notification.getShoppingOrderId()).andProductModelIdEqualTo(notification.getSeckillActivityProductId());
 	    long count = productModelInventoryDOMapper.countByExample(example);

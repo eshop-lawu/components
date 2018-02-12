@@ -16,8 +16,8 @@ import com.lawu.compensating.transaction.service.impl.AbstractTransactionMainSer
  * @updateDate 2017年12月25日
  */
 @Service
-@CompensatingTransactionMain(value = TransactionTest.TYPE, topic = TransactionTest.TOPIC, tags = TransactionTest.TAGS)
-public class TestTransactionMainServiceImpl extends AbstractTransactionMainService<TestNotification, TestReply> {
+@CompensatingTransactionMain(value = TransactionTest.TYPE, topic = TransactionTest.TOPIC, tags = TransactionTest.TAGS + "2")
+public class TestTransactionMainServiceImpl2 extends AbstractTransactionMainService<TestNotification, TestReply2> {
     
     @Autowired
     private ShoppingOrderDOMapper shoppingOrderDOMapper;
@@ -34,7 +34,7 @@ public class TestTransactionMainServiceImpl extends AbstractTransactionMainServi
     
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void afterSuccess(Long shoppingOrderId, TestReply reply) {
+    public void afterSuccess(Long shoppingOrderId, TestReply2 reply) {
         ShoppingOrderDO shoppingOrderUpdate = new ShoppingOrderDO();
         shoppingOrderUpdate.setId(shoppingOrderId);
         if (reply.getIsSuccess()) {

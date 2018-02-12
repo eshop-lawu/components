@@ -1,6 +1,5 @@
 package com.lawu.compensating.transaction.service;
 
-import java.util.Date;
 import java.util.List;
 
 import com.lawu.compensating.transaction.bo.TransactionRecordBO;
@@ -55,12 +54,12 @@ public interface TransactionStatusService {
     void deleteExpiredRecords();
     
     /**
-     * 根据给定日期删除事务记录
-     * @param deleteRecordDate
+     * 事务是否执行成功
+     * @param transactionId 事务id
      * @return
      * @author jiangxinjun
-     * @createDate 2018年2月8日
-     * @updateDate 2018年2月8日
+     * @createDate 2018年2月11日
+     * @updateDate 2018年2月11日
      */
-    //int deleteExpiredRecords(Date deleteRecordDate);
+    Boolean isSuccess(Long transactionId);
 }
