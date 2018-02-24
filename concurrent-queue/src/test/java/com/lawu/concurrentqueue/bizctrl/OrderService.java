@@ -12,7 +12,7 @@ import com.lawu.concurrentqueue.bizctrl.annotation.BusinessInventoryCtrl;
 @Service
 public class OrderService {
 
-    @BusinessInventoryCtrl(idParamIndex = 0, businessKey = "BusinessDecisionAspectTest", using = BusinessDecisionServiceImpl.class)
+    @BusinessInventoryCtrl(idParamIndex = 0, businessKey = "BusinessDecisionAspectTest", using = BusinessDecisionServiceImpl.class, isLock = true)
     public Result createOrder(int id) {
         System.out.println("Create order: " + id);
         Result rs = new Result();

@@ -32,4 +32,13 @@ public @interface BusinessInventoryCtrl {
      * @return
      */
     Class<? extends BusinessDecisionService> using();
+    
+    /**
+     * 是否加锁
+     * @return
+     * @author jiangxinjun
+     * @createDate 2018年2月24日
+     * @updateDate 2018年2月24日
+     */
+    boolean isLock() default false;
 }
