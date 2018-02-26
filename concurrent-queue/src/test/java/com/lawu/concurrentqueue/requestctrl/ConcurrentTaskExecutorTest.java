@@ -6,22 +6,24 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import com.lawu.concurrentqueue.ApplicationTest;
 import com.lawu.concurrentqueue.base.Result;
 
 /**
  * @author Leach
  * @date 2017/11/29
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/concurrent-queue-spring-test.xml"})
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ApplicationTest.class, properties = {"lawu.synchronization-lock.redisson.enabled=false"})
 public class ConcurrentTaskExecutorTest {
 
     @Autowired
     private ConcurrentTaskExecutor concurrentTaskExecutor;
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void execute() {
         AtomicInteger successCount = new AtomicInteger(0);
@@ -56,6 +58,7 @@ public class ConcurrentTaskExecutorTest {
         Assert.assertEquals(1, exceptionCount.intValue());
     }
 
+    @SuppressWarnings("rawtypes")
     private Result executeResult(int index) {
         return (Result) concurrentTaskExecutor.execute(new ConcurrentTask<Result, String>() {
 
@@ -65,6 +68,7 @@ public class ConcurrentTaskExecutorTest {
                 return "success";
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             public Result executeWhenSuccess(String successInfo) {
                 Result rs = new Result();

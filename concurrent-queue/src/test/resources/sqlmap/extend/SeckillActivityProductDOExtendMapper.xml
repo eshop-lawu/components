@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lawu.concurrentqueue.mapper.extend.SeckillActivityProductDOExtendMapper">
+    <update id="subtractInventory">
+        UPDATE seckill_activity_product SET 
+        left_count = left_count - #{num,jdbcType=INTEGER},
+        gmt_modified = NOW()
+        where id = #{productId,jdbcType=BIGINT} AND left_count <![CDATA[ >= ]]> #{num,jdbcType=INTEGER}
+    </update>
+</mapper>

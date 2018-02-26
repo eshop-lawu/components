@@ -1,0 +1,7 @@
+{"properties": [
+  {
+    "name": "lawu.concurrent-queue.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用并发控制"
+  }
+]}

@@ -3,11 +3,15 @@ package com.lawu.concurrentqueue.bizctrl;
 import java.lang.reflect.Method;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import com.lawu.concurrentqueue.bizctrl.annotation.BusinessInventoryCtrl;
 import com.lawu.synchronization.lock.service.LockService;
@@ -17,6 +21,7 @@ import com.lawu.synchronization.lock.service.LockService;
  * @author Leach
  * @date 2017/11/28
  */
+@Aspect
 public class BusinessDecisionAspect implements ApplicationContextAware {
 
     /**
@@ -31,7 +36,12 @@ public class BusinessDecisionAspect implements ApplicationContextAware {
     
     @Autowired
     private LockService lockService;
-
+    
+    @Pointcut("@annotation(com.lawu.concurrentqueue.bizctrl.annotation.BusinessInventoryCtrl)")
+    public void aspect() {}
+    
+    @SuppressWarnings("rawtypes")
+    @Around("aspect()")
     public Object aroundMethod(ProceedingJoinPoint point) {
 
         MethodSignature signature = (MethodSignature)point.getSignature();
@@ -53,7 +63,6 @@ public class BusinessDecisionAspect implements ApplicationContextAware {
         }
         
         String lockKey = LOCK_KEY.concat(businessKey).concat("_").concat(businessId.toString());
-        
         if (isLock) {
             boolean lock = lockService.tryLock(1000, 5000, lockKey);
             if (!lock) {
@@ -78,7 +87,6 @@ public class BusinessDecisionAspect implements ApplicationContextAware {
             }
         }
     }
-
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

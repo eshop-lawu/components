@@ -18,20 +18,64 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class ConcurrentTaskExecutor implements InitializingBean {
 
-    private int corePoolSize;
+    /**
+     * 核心线程数，指保留的线程池大小
+     */
+    private int corePoolSize = 2;
 
-    private int maximumPoolSize;
+    /**
+     * 指的是线程池的最大数
+     */
+    private int maximumPoolSize = 5;
 
-    private long keepAliveTime;
+    /**
+     * 指的是空闲线程结束的超时时间(秒)
+     */
+    private long keepAliveTime = 60;
 
-    private int queueCount;
+    /**
+     * 队列大小
+     */
+    private int queueCount = 2;
 
     private BlockingQueue<Runnable> workQueue;
 
     private ExecutorService executorService;
+    
+    public int getCorePoolSize() {
+        return corePoolSize;
+    }
 
+    public void setCorePoolSize(int corePoolSize) {
+        this.corePoolSize = corePoolSize;
+    }
+
+    public int getMaximumPoolSize() {
+        return maximumPoolSize;
+    }
+
+    public void setMaximumPoolSize(int maximumPoolSize) {
+        this.maximumPoolSize = maximumPoolSize;
+    }
+
+    public long getKeepAliveTime() {
+        return keepAliveTime;
+    }
+
+    public void setKeepAliveTime(long keepAliveTime) {
+        this.keepAliveTime = keepAliveTime;
+    }
+
+    public int getQueueCount() {
+        return queueCount;
+    }
+
+    public void setQueueCount(int queueCount) {
+        this.queueCount = queueCount;
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Object execute(ConcurrentTask concurrentTask) {
-
         try {
 
             Callable thread = concurrentTask.createThread();
@@ -45,23 +89,7 @@ public class ConcurrentTaskExecutor implements InitializingBean {
             return concurrentTask.executeWhenException();
         }
     }
-
-    public void setCorePoolSize(int corePoolSize) {
-        this.corePoolSize = corePoolSize;
-    }
-
-    public void setMaximumPoolSize(int maximumPoolSize) {
-        this.maximumPoolSize = maximumPoolSize;
-    }
-
-    public void setKeepAliveTime(long keepAliveTime) {
-        this.keepAliveTime = keepAliveTime;
-    }
-
-    public void setQueueCount(int queueCount) {
-        this.queueCount = queueCount;
-    }
-
+    
     @Override
     public void afterPropertiesSet() throws Exception {
         workQueue = new LinkedBlockingQueue<>(queueCount);
