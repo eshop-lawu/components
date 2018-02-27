@@ -16,7 +16,7 @@ import com.lawu.mq.message.MessageProducerService;
  * @date 2017/9/8
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = ApplicationTest.class)
 public class ProducerTest {
     
     @Autowired

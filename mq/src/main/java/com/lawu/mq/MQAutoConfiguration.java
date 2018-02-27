@@ -1,5 +1,6 @@
 package com.lawu.mq;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Import;
 import com.alibaba.rocketmq.client.consumer.DefaultMQPushConsumer;
 import com.alibaba.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
+import com.alibaba.rocketmq.common.constant.LoggerName;
 import com.alibaba.rocketmq.common.consumer.ConsumeFromWhere;
 import com.alibaba.rocketmq.common.protocol.heartbeat.MessageModel;
 import com.lawu.mq.MQAutoConfiguration.RocketMQAutoConfiguration;
@@ -20,6 +22,8 @@ import com.lawu.mq.message.MQConsumerFactory;
 import com.lawu.mq.message.MessageProducerService;
 import com.lawu.mq.message.impl.AbstractMessageConsumerListener;
 import com.lawu.mq.message.impl.RocketMQMessageProducerServiceImpl;
+
+import ch.qos.logback.classic.Level;
 
 /**
  * RocketMQ自动配置类
@@ -56,7 +60,24 @@ public class MQAutoConfiguration {
         @Bean(initMethod = "start", destroyMethod = "shutdown")
         @ConfigurationProperties(prefix = "lawu.mq.rocketmq")
         public DefaultMQProducer defaultMQProducer() {
+            // 设置为不加载自带的配置,使用项目中的日志配置
+            System.setProperty("rocketmq.client.log.loadconfig", "false");
             DefaultMQProducer defaultMQProducer = new DefaultMQProducer();
+            
+            /*
+             * 调整RocketmqClient日志输出
+             * 1.rocketmq.client.log.loadconfig设置为false
+             * 2.rocketmq.client.logback.resource.fileName设置为本地的配置文件
+             * 3.清除自身所带的输出源,叠加项目的输出源
+             * 4.在初始化之前设置rocketmq.client.log.loadconfig为false,不加载自带配置***
+             * */
+            ch.qos.logback.classic.Logger clientLoggerNameLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(LoggerName.ClientLoggerName);
+            // 清除本身自带的输出源
+            //clientLoggerNameLogger.detachAndStopAllAppenders();
+            // 叠加顶级的输出源
+            ///clientLoggerNameLogger.setAdditive(true);
+            // 设置日志等级为WARN
+            clientLoggerNameLogger.setLevel(Level.WARN);
             defaultMQProducer.setInstanceName("product");
             return defaultMQProducer;
         }
