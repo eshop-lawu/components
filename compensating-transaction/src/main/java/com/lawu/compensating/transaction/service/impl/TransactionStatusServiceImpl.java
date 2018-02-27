@@ -143,7 +143,7 @@ public class TransactionStatusServiceImpl implements TransactionStatusService {
     public Boolean isSuccess(Long transactionId) {
         TransactionRecordDO transactionRecord = transactionRecordDOMapper.selectByPrimaryKey(transactionId);
         if (transactionRecord == null) {
-            throw new RuntimeException("transactionId is null");
+            throw new RuntimeException("transactionRecord is null by transactionId:" + transactionId);
         }
         return transactionRecord.getIsProcessed();
     }
