@@ -1,0 +1,7 @@
+{"properties": [
+  {
+    "name": "lawu.framework-core.event.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用事件"
+  }
+]}
