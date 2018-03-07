@@ -42,6 +42,8 @@ public class PushServiceImpl implements GtPushService, InitializingBean {
 
     private IGtPush push;
 
+    private Boolean isClientId;
+
     @Override
     public String pushMessageToSingle(String cid, String title, String contents) {
         SingleMessage message = new SingleMessage();
@@ -52,7 +54,11 @@ public class PushServiceImpl implements GtPushService, InitializingBean {
         // 可选，1为wifi，0为不限制网络环境。根据手机处于的网络情况，决定是否下发
         message.setPushNetWorkType(0);
         Target target = new Target();
-        target.setClientId(cid);
+        if(isClientId){
+            target.setClientId(cid);
+        }else{
+            target.setAlias(cid);
+        }
         target.setAppId(appId);
         IPushResult ret;
         try {
@@ -112,5 +118,9 @@ public class PushServiceImpl implements GtPushService, InitializingBean {
 
     public void setMasterSecret(String masterSecret) {
         this.masterSecret = masterSecret;
+    }
+
+    public void setIsClientId(Boolean clientId) {
+        isClientId = clientId;
     }
 }

@@ -12,6 +12,7 @@
         <property name="appKey" value="vi1F0oUgRYAaxZ3xtPeVUA"/>
         <property name="gtHost" value="http://sdk.open.api.igexin.com/apiex.htm"/>
         <property name="masterSecret" value="5f23soSbuN76qvvxOZipc1"/>
+        <property name="isClientId" value="true"/>
     </bean>
 
 </beans>
