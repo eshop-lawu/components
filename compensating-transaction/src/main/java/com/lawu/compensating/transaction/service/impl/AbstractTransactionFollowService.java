@@ -75,8 +75,6 @@ public abstract class AbstractTransactionFollowService<N extends Notification, R
     	try {
     	    TransactionFollowService<N, R> proxy = springApplicationContextTool.getProxy(this, TransactionFollowService.class);
     	    proxy.executeNotice(notification);
-    		// 只有事务全部执行成功，才会发送回复消息
-            sendCallback(notification);
     	} catch (NegligibleException e) {
     	    logger.warn("从事务记录重复 {}", e.getMessage());
         } catch (Exception e) {
@@ -119,6 +117,8 @@ public abstract class AbstractTransactionFollowService<N extends Notification, R
         } catch (DuplicateKeyException e) {
             throw new NegligibleException(e);
         }
+        // 只有事务全部执行成功，才会发送回复消息
+        sendCallback(notification);
     }
     
     /**
