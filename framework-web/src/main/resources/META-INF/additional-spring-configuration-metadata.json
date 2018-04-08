@@ -1,0 +1,32 @@
+{"properties": [
+  {
+    "name": "lawu.framework-web.interceptor.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用拦截器"
+  },
+  {
+    "name": "lawu.framework-web.xss-filter.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用xss过滤器"
+  },
+  {
+    "name": "lawu.framework-web.cors.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用跨域"
+  },
+  {
+    "name": "lawu.framework-web.document.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用接口文档"
+  },
+  {
+    "name": "lawu.framework-web.swagger-api.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用接口调试工具"
+  },
+  {
+    "name": "lawu.framework-web.swagger-api.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用接口调试工具"
+  }
+]}

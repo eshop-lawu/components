@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>审核文档</title>
+    <link rel="stylesheet" href="plugins/bootstrap-3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="plugins/bootstrap-table-v1.11.1/bootstrap-table.css">
+    <link rel="stylesheet" href="css/document.css">
+</head>
+<body>
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">接口审核</a></li>
+    <li role="presentation"><a href="#resultCode" role="tab" data-toggle="tab">返回码列表</a></li>
+</ul>
+
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+        <div class="col-lg-12">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form role="form" id="searchForm">
+                            <div class="form-group">
+                                <label>是否审核</label>
+                                <label class="radio-inline" for="isAudit-1">
+                                    <input type="radio" name="isAudit" id="isAudit-1" value="true" checked>已审核
+                                </label>
+                                <label class="radio-inline" for="isAudit-2">
+                                    <input type="radio" name="isAudit" id="isAudit-2" value="false">未审核
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success" id="search">搜索</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <table id="contentTable"></table>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="resultCode">
+        <div class="col-lg-12">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-lg-12">
+                    </div>
+                </div>
+                <table id="contentTable1"></table>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-3.2.1.js"></script>
+<script src="plugins/bootstrap-3.3.7/js/bootstrap.js"></script>
+<script src="plugins/bootstrap-table-v1.11.1/bootstrap-table.js"></script>
+<script src="plugins/bootstrap-table-v1.11.1/locale/bootstrap-table-zh-CN.js"></script>
+<script src="plugins/bootstrap-table-v1.11.1/extensions/export/bootstrap-table-export.js"></script>
+<script src="plugins/bootstrap-table-v1.11.1/extensions/export/tableExport.js"></script>
+<script src="js/document.js"></script>
+</body>
+</html>
