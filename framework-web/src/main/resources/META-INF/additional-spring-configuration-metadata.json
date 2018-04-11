@@ -1,8 +1,13 @@
 {"properties": [
   {
-    "name": "lawu.framework-web.interceptor.enabled",
+    "name": "lawu.framework-web.interceptor.user-visit.enabled",
     "type": "java.lang.String",
-    "description": "是否启用拦截器"
+    "description": "是否启用用户访问拦截器"
+  },
+  {
+    "name": "lawu.framework-web.interceptor.param-sign.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用参数签名拦截器"
   },
   {
     "name": "lawu.framework-web.xss-filter.enabled",

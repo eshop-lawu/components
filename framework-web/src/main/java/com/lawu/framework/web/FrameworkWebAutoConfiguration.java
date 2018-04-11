@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -18,12 +19,14 @@ import com.google.common.base.Predicates;
 import com.lawu.authorization.AuthorizationAutoConfiguration;
 import com.lawu.framework.web.FrameworkWebAutoConfiguration.CorsAutoConfiguration;
 import com.lawu.framework.web.FrameworkWebAutoConfiguration.DocumentAutoConfiguration;
-import com.lawu.framework.web.FrameworkWebAutoConfiguration.InterceptorAutoConfiguration;
+import com.lawu.framework.web.FrameworkWebAutoConfiguration.ParamSignInterceptorAutoConfiguration;
 import com.lawu.framework.web.FrameworkWebAutoConfiguration.SwaggerAutoConfiguration;
+import com.lawu.framework.web.FrameworkWebAutoConfiguration.UserVisitInterceptorAutoConfiguration;
 import com.lawu.framework.web.doc.annotation.Audit;
 import com.lawu.framework.web.doc.controller.DocumentController;
 import com.lawu.framework.web.doc.controller.ResultCodeController;
 import com.lawu.framework.web.filter.XssFilter;
+import com.lawu.framework.web.interceptor.ParamSignInterceptor;
 import com.lawu.framework.web.interceptor.UserVisitInterceptor;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,8 +46,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @AutoConfigureAfter(AuthorizationAutoConfiguration.class)
 @Configuration
-@Import({ InterceptorAutoConfiguration.class, CorsAutoConfiguration.class, DocumentAutoConfiguration.class, SwaggerAutoConfiguration.class})
+@Import({ UserVisitInterceptorAutoConfiguration.class, 
+    ParamSignInterceptorAutoConfiguration.class, 
+    CorsAutoConfiguration.class, 
+    DocumentAutoConfiguration.class, 
+    SwaggerAutoConfiguration.class,
+    GlobalExceptionHandler.class})
 public class FrameworkWebAutoConfiguration {
+    
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {  
+        return new MethodValidationPostProcessor();
+    }
     
     /**
      * xss过滤器
@@ -72,16 +85,16 @@ public class FrameworkWebAutoConfiguration {
     }*/
     
     /**
-     * 拦截器自动配置
+     * 用户访问拦截器自动配置
      * @author jiangxinjun
      * @createDate 2018年3月5日
      * @updateDate 2018年3月5日
      */
-    @ConditionalOnProperty(name = {"lawu.framework-web.interceptor.enabled"}, havingValue="true", matchIfMissing = false)
+    @ConditionalOnProperty(name = {"lawu.framework-web.interceptor.user-visit.enabled"}, havingValue="true", matchIfMissing = false)
     @Configuration
-    public static class InterceptorAutoConfiguration extends WebMvcConfigurerAdapter {
+    public static class UserVisitInterceptorAutoConfiguration extends WebMvcConfigurerAdapter {
         
-        @ConfigurationProperties(prefix = "lawu.framework-web.interceptor")
+        @ConfigurationProperties(prefix = "lawu.framework-web.interceptor.user-visit")
         @Bean
         public UserVisitInterceptor userVisitInterceptor() {
             return new UserVisitInterceptor();
@@ -90,6 +103,29 @@ public class FrameworkWebAutoConfiguration {
         @Override
         public void addInterceptors(InterceptorRegistry registry) {
             registry.addInterceptor(userVisitInterceptor()).addPathPatterns("/**");
+            super.addInterceptors(registry);
+        }
+    }
+    
+    /**
+     * 参数签名拦截器自动配置
+     * @author jiangxinjun
+     * @createDate 2018年3月5日
+     * @updateDate 2018年3月5日
+     */
+    @ConditionalOnProperty(name = {"lawu.framework-web.interceptor.param-sign.enabled"}, havingValue="true", matchIfMissing = false)
+    @Configuration
+    public class ParamSignInterceptorAutoConfiguration extends WebMvcConfigurerAdapter {
+        
+        @ConfigurationProperties(prefix = "lawu.framework-web.interceptor.param-sign")
+        @Bean
+        public ParamSignInterceptor paramSignInterceptor() {
+            return new ParamSignInterceptor();
+        }
+        
+        @Override
+        public void addInterceptors(InterceptorRegistry registry) {
+            registry.addInterceptor(paramSignInterceptor()).addPathPatterns("/**");
             super.addInterceptors(registry);
         }
     }
