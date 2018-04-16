@@ -1,6 +1,7 @@
 package com.lawu.idworker.client;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,8 +19,9 @@ import com.lawu.idworker.client.util.IdWorkerHelper;
 @SpringBootTest(classes = ApplicationTest.class)
 public class IdWorkerHelperTest {
     
+    @Ignore
     @Test
-    public void sendMessage() {
+    public void generate() {
         String orderNum = IdWorkerHelper.generate();
         Assert.assertNotNull(orderNum);
     }

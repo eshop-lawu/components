@@ -1,0 +1,7 @@
+{"properties": [
+  {
+    "name": "com.lawu.id-worker-client.enabled",
+    "type": "java.lang.String",
+    "description": "是否启用id-worker"
+  }
+]}
