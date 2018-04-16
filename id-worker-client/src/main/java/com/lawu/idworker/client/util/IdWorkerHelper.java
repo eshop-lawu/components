@@ -25,30 +25,31 @@ public class IdWorkerHelper {
         
     }
     
+    public static void setIdWorkerService(IdWorkerService idWorkerService) {
+        IdWorkerHelper.idWorkerService = idWorkerService;
+    }
+    
     /**
      * 
      * @return
      * @author jiangxinjun
-     * @date 2017年10月25日
+     * @createDate 2017年10月25日
+     * @updateDate 2018年4月13日
      */
     public static String generate() {
+        // 两次判断
         if (quene.isEmpty()) {
-            quene.addAll(getIdWorkerService().batchGenerate());
+            synchronized (quene) {
+                if (quene.isEmpty()) {
+                    quene.addAll(idWorkerService.batchGenerate());
+                }
+            }
         }
         // 考虑并发
         String rtn = quene.poll();
         if (rtn != null) {
             return rtn;
         }
-        quene.addAll(getIdWorkerService().batchGenerate());
-        return quene.poll();
+        return generate();
     }
-
-    public static IdWorkerService getIdWorkerService() {
-        if (idWorkerService == null) {
-            idWorkerService = SpringTool.getApplicationContext().getBean(IdWorkerService.class);
-        }
-        return idWorkerService;
-    }
-
 }
