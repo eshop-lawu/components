@@ -163,7 +163,7 @@ public class FrameworkWebAutoConfiguration {
     }
     
     @ConditionalOnClass(Docket.class)
-    @ConditionalOnProperty(name = "lawu.framework-web.swagger-api.enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(name = "lawu.framework-web.swagger-api.enabled", havingValue = "true", matchIfMissing = false)
     @ConfigurationProperties(prefix = "lawu.framework-web.swagger-api")
     @Configuration
     @EnableSwagger2
