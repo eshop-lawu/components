@@ -1,7 +1,4 @@
-package com.lawu.idworker.util;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.lawu.id.worker.generate;
 
 /**
  * 
@@ -21,14 +18,19 @@ public class IdWorker {
     private static final  long TIMESTAMP_LEFT_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS + DATACENTER_ID_BITS;
     private static final  long SEQUENCE_MASK = -1L ^ (-1L << SEQUENCE_BITS);
 
-    private long workerId;
-    private long datacenterId;
+    /**
+     * 派发器ID
+     */
+    private long workerId = 0L;
+    
+    /**
+     * 数据中心ID
+     */
+    private long datacenterId = 0L;
     private long sequence = 0L;
     private long lastTimestamp = -1L;
     
-    private int maximum = 200;
-    
-    public IdWorker(long workerId, long datacenterId, Integer maximum) {
+    public IdWorker(long workerId, long datacenterId) {
         if (workerId > MAX_WORKER_ID || workerId < 0) {
             throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", MAX_WORKER_ID));
         }
@@ -37,25 +39,10 @@ public class IdWorker {
         }
         this.workerId = workerId;
         this.datacenterId = datacenterId;
-        if (maximum != null) {
-            this.maximum = maximum;
-        }
-    }
-    
-    public IdWorker(long workerId, long datacenterId) {
-        this(workerId, datacenterId, null);
     }
     
     public String generate() {
         return String.valueOf(nextId());
-    }
-    
-    public List<String> batchGenerate() {
-        List<String> rtn = new ArrayList<>();
-        for (int i = 0; i < maximum; i++) {
-            rtn.add(generate());
-        }
-        return rtn;
     }
     
     private synchronized long nextId() {

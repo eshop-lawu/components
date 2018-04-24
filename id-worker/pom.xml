@@ -12,8 +12,17 @@
     
     <artifactId>id-worker</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    
+    <properties>
+        <id-worker-generate.version>1.0-SNAPSHOT</id-worker-generate.version>
+    </properties>
+    
     <dependencies>
+        <dependency>
+            <groupId>com.lawu</groupId>
+            <artifactId>id-worker-generate</artifactId>
+            <version>${id-worker-generate.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka</artifactId>

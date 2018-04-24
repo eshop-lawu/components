@@ -1,4 +1,4 @@
-package com.lawu.idworker.service;
+package com.lawu.id.worker.generate.service;
 
 import java.util.List;
 

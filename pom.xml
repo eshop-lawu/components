@@ -155,4 +155,7 @@
             <url>http://192.168.1.21:9903/nexus/content/repositories/lawu-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+    <modules>
+        <module>id-worker-generate</module>
+    </modules>
 </project>
