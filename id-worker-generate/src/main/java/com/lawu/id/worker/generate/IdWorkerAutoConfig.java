@@ -18,7 +18,7 @@ public class IdWorkerAutoConfig {
     }
     
     @Bean 
-    IdWorkerService idWorkerService() {
+    public IdWorkerService idWorkerService() {
         return new IdWorkerServiceImpl();
     }
 }
