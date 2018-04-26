@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.lawu</groupId>
+        <artifactId>components</artifactId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>utils</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    
+    <properties>
+        <fastjson.version>1.2.3</fastjson.version>
+        <QRCode.version>1.0</QRCode.version>
+        <poi.version>3.16</poi.version>
+        <pinyin4j.version>2.5.1</pinyin4j.version>
+        <commons-io.version>2.4</commons-io.version>
+        <gexin-rp-sdk-template.version>4.0.0.8</gexin-rp-sdk-template.version>
+        <gexin-rp-sdk-http.version>4.0.1.9</gexin-rp-sdk-http.version>
+        <gexin-rp-sdk-base.version>4.0.0.14</gexin-rp-sdk-base.version>
+        <gexin-rp-fastjson.version>1.0.0.0</gexin-rp-fastjson.version>
+        <protobuf-java.version>2.5.0</protobuf-java.version>
+    </properties>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.swetake</groupId>
+            <artifactId>QRCode</artifactId>
+            <version>${QRCode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gexin</groupId>
+            <artifactId>gexin-rp-sdk-template</artifactId>
+            <version>${gexin-rp-sdk-template.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gexin</groupId>
+            <artifactId>gexin-rp-sdk-http</artifactId>
+            <version>${gexin-rp-sdk-http.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gexin</groupId>
+            <artifactId>gexin-rp-sdk-base</artifactId>
+            <version>${gexin-rp-sdk-base.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gexin</groupId>
+            <artifactId>gexin-rp-fastjson</artifactId>
+            <version>${gexin-rp-fastjson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${protobuf-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+
+        <!-- excel文件操作 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+
+        <!-- 中文拼音 -->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>${pinyin4j.version}</version>
+        </dependency>
+
+        <!-- 文件读写操作 -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- provided -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
