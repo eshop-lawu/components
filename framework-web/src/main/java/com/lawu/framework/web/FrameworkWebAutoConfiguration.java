@@ -108,29 +108,6 @@ public class FrameworkWebAutoConfiguration {
     }
     
     /**
-     * 参数签名拦截器自动配置
-     * @author jiangxinjun
-     * @createDate 2018年3月5日
-     * @updateDate 2018年3月5日
-     */
-    @ConditionalOnProperty(name = {"lawu.framework-web.interceptor.param-sign.enabled"}, havingValue="true", matchIfMissing = false)
-    @Configuration
-    public class ParamSignInterceptorAutoConfiguration extends WebMvcConfigurerAdapter {
-        
-        @ConfigurationProperties(prefix = "lawu.framework-web.interceptor.param-sign")
-        @Bean
-        public ParamSignInterceptor paramSignInterceptor() {
-            return new ParamSignInterceptor();
-        }
-        
-        @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-            registry.addInterceptor(paramSignInterceptor()).addPathPatterns("/**");
-            super.addInterceptors(registry);
-        }
-    }
-    
-    /**
      * 拦截器自动配置
      * @author jiangxinjun
      * @createDate 2018年3月5日
@@ -139,7 +116,7 @@ public class FrameworkWebAutoConfiguration {
     @ConditionalOnProperty(name = {"lawu.framework-web.cors.enabled"}, havingValue="true", matchIfMissing = false)
     @Configuration
     public static class CorsAutoConfiguration extends WebMvcConfigurerAdapter {
-        
+
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
@@ -147,7 +124,7 @@ public class FrameworkWebAutoConfiguration {
             .allowedHeaders("*")
             .allowedMethods("*");
         }
-        
+
     }
     
     /**
@@ -168,12 +145,17 @@ public class FrameworkWebAutoConfiguration {
     @Configuration
     @EnableSwagger2
     public static class SwaggerAutoConfiguration {
-        
+
         /**
          * 是否审核
          */
         private Boolean audit = true;
-        
+
+        /**
+         * 访问地址
+         */
+        private String host;
+
         public Boolean getAudit() {
             return audit;
         }
@@ -182,12 +164,21 @@ public class FrameworkWebAutoConfiguration {
             this.audit = audit;
         }
 
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
         @Bean
         public Docket api() {
             return new Docket(DocumentationType.SWAGGER_2)
                     .groupName("API")
                     .forCodeGeneration(true)
                     .pathMapping("/")
+                    .host(host)
                     .select()
                     .apis(RequestHandlerSelectors.withMethodAnnotation(getAudit() ? Audit.class : ApiOperation.class))
                     .paths(paths())
@@ -195,7 +186,7 @@ public class FrameworkWebAutoConfiguration {
                     .apiInfo(apiInfo())
                     .useDefaultResponseMessages(false);
         }
-        
+
         private ApiInfo apiInfo() {
             return new ApiInfoBuilder()
                     .title("API")
@@ -203,10 +194,33 @@ public class FrameworkWebAutoConfiguration {
                     .version("1.0")
                     .build();
         }
-        
+
         private Predicate<String> paths() {
             return Predicates.and(PathSelectors.regex("/.*"), Predicates.not(PathSelectors.regex("/error")));
         }
-        
+
+    }
+    
+    /**
+     * 参数签名拦截器自动配置
+     * @author jiangxinjun
+     * @createDate 2018年3月5日
+     * @updateDate 2018年3月5日
+     */
+    @ConditionalOnProperty(name = {"lawu.framework-web.interceptor.param-sign.enabled"}, havingValue="true", matchIfMissing = false)
+    @Configuration
+    public class ParamSignInterceptorAutoConfiguration extends WebMvcConfigurerAdapter {
+
+        @ConfigurationProperties(prefix = "lawu.framework-web.interceptor.param-sign")
+        @Bean
+        public ParamSignInterceptor paramSignInterceptor() {
+            return new ParamSignInterceptor();
+        }
+
+        @Override
+        public void addInterceptors(InterceptorRegistry registry) {
+            registry.addInterceptor(paramSignInterceptor()).addPathPatterns("/**");
+            super.addInterceptors(registry);
+        }
     }
 }
