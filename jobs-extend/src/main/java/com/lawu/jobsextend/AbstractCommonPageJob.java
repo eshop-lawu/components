@@ -2,6 +2,7 @@ package com.lawu.jobsextend;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +54,7 @@ public abstract class AbstractCommonPageJob<T> implements BasePageJob<T> {
 
         if (pageSize == null) {
             String jobParameter = shardingContext.getJobParameter();
-            if (jobParameter != null) {
+            if (StringUtils.isNotBlank(jobParameter)) {
                 pageSize = Integer.parseInt(jobParameter);
             } else {
                 pageSize = 0;
