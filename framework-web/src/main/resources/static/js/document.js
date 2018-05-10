@@ -36,13 +36,14 @@ $(function(){
 	        sortable: true,
 	        formatter: function(value, row, index) {
 	        	var group = row.apiName.replace("[", "").replace("]", "");
+	        	value = value.replace("[", "").replace("]", "");
 	        	var path_obj = paths[value.indexOf("/") == 0 ? value : ("/" + value)];
 	        	if (path_obj != undefined) {
 		        	var operationId = path_obj[row.httpMethod.toLowerCase()].operationId;
 		        	var path = "swagger-ui.html#!/" + group + "/" + operationId;
 		        	return "<a " + (row.isDeprecated ? "style=\"text-decoration: line-through;\"" : "") +  " href=\"" + path + "\" target=\"_blank\">" + value + "</a>";
 	        	} else {
-	        		return value;
+	        		return "<span " + (row.isDeprecated ? "style=\"text-decoration: line-through;\"" : "") + ">" + value + "</span>";
 	        	}
 	        }
 	    }, {
