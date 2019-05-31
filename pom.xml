@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lawu</groupId>
     <artifactId>components</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     
     <properties>
@@ -14,13 +14,15 @@
         <embedded-redis.version>0.6</embedded-redis.version>
         <rocketmq.version>3.2.6</rocketmq.version>
         <mybatis-spring-boot-starter.version>1.3.1</mybatis-spring-boot-starter.version>
+        <mybatis.version>1.0-SNAPSHOT</mybatis.version>
+        <mybatis-generator-maven-plugin.version>1.3.6</mybatis-generator-maven-plugin.version>
         <druid-spring-boot-starter.version>1.1.9</druid-spring-boot-starter.version>
         <docker.image.prefix>registry.eshop.com/library</docker.image.prefix>
         <docker.image.server-id>harbor</docker.image.server-id>
         <docker.image.registry-url>https://registry.eshop.com</docker.image.registry-url>
         <docker.base.image>java:8-alpine</docker.base.image>
     </properties>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>

@@ -1,14 +1,6 @@
 package com.lawu.mq;
 
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-
+import ch.qos.logback.classic.Level;
 import com.alibaba.rocketmq.client.consumer.DefaultMQPushConsumer;
 import com.alibaba.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
@@ -22,12 +14,18 @@ import com.lawu.mq.message.MQConsumerFactory;
 import com.lawu.mq.message.MessageProducerService;
 import com.lawu.mq.message.impl.AbstractMessageConsumerListener;
 import com.lawu.mq.message.impl.RocketMQMessageProducerServiceImpl;
-
-import ch.qos.logback.classic.Level;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * RocketMQ自动配置类
- * 
+ *
  * @author jiangxinjun
  * @createDate 2017年12月22日
  * @updateDate 2017年12月22日
@@ -35,12 +33,12 @@ import ch.qos.logback.classic.Level;
 @Configuration
 @Import({RocketMQAutoConfiguration.class})
 public class MQAutoConfiguration {
-    
+
     @Bean
     public CustomConsumerRegister customConsumerRegister() {
         return new CustomConsumerRegisterImpl();
     }
-    
+
     // Mock
     @Bean
     @ConditionalOnMissingBean
@@ -51,19 +49,19 @@ public class MQAutoConfiguration {
             }
         };
     }
-    
+
     @ConditionalOnClass(DefaultMQProducer.class)
     @ConditionalOnProperty(value = "lawu.mq.rocketmq.namesrvAddr")
     @Configuration
     public static class RocketMQAutoConfiguration {
-        
+
         @Bean(initMethod = "start", destroyMethod = "shutdown")
         @ConfigurationProperties(prefix = "lawu.mq.rocketmq")
         public DefaultMQProducer defaultMQProducer() {
             // 设置为不加载自带的配置,使用项目中的日志配置
             System.setProperty("rocketmq.client.log.loadconfig", "false");
             DefaultMQProducer defaultMQProducer = new DefaultMQProducer();
-            
+
             /*
              * 调整RocketmqClient日志输出
              * 1.rocketmq.client.log.loadconfig设置为false
@@ -81,12 +79,12 @@ public class MQAutoConfiguration {
             defaultMQProducer.setInstanceName("product");
             return defaultMQProducer;
         }
-        
+
         @Bean
         public MessageProducerService messageProducerService() {
             return new RocketMQMessageProducerServiceImpl();
         }
-        
+
         @Bean
         @ConfigurationProperties(prefix = "lawu.mq.rocketmq")
         public DefaultMQPushConsumer defaultMQPushConsumer() {
@@ -101,7 +99,7 @@ public class MQAutoConfiguration {
             defaultMQPushConsumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
             return defaultMQPushConsumer;
         }
-        
+
         @Bean
         @ConditionalOnMissingBean
         public MessageListenerConcurrently messageConsumerListener() {
@@ -111,9 +109,9 @@ public class MQAutoConfiguration {
                 }
             };
         }
-        
+
         @ConfigurationProperties(prefix = "lawu.mq.rocketmq")
-        @Bean(initMethod = "createDeviceDatagramConsumer", destroyMethod ="shutdown")
+        @Bean(initMethod = "createDeviceDatagramConsumer", destroyMethod = "shutdown")
         public MQConsumerFactory defaultMQConsumerFactory() {
             MQConsumerFactory defaultMQConsumerFactory = new MQConsumerFactory();
             return defaultMQConsumerFactory;

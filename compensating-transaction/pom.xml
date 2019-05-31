@@ -109,12 +109,12 @@
             <groupId>com.github.kstyrc</groupId>
             <artifactId>embedded-redis</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid-spring-boot-starter.version}</version><!--$NO-MVN-MAN-VER$-->
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba</groupId>-->
+<!--            <artifactId>druid-spring-boot-starter</artifactId>-->
+<!--            <version>${druid-spring-boot-starter.version}</version>&lt;!&ndash;$NO-MVN-MAN-VER$&ndash;&gt;-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
