@@ -1,0 +1,7 @@
+需要讲jar包install本地maven仓库
+mvn install:install-file -DgroupId=com.swetake -DartifactId=QRCode -Dversion=1.0 -Dpackaging=jar -Dfile=D:/1/Qrcode.jar
+
+mvn install:install-file -DgroupId=com.gexin -DartifactId=gexin-rp-sdk-template -Dversion=4.0.0.8 -Dpackaging=jar -Dfile=D:/1/gexin-rp-sdk-template-4.0.0.8.jar
+mvn install:install-file -DgroupId=com.gexin -DartifactId=gexin-rp-fastjson -Dversion=1.0.0.0 -Dpackaging=jar -Dfile=D:/1/gexin-rp-fastjson-1.0.0.0.jar
+mvn install:install-file -DgroupId=com.gexin -DartifactId=gexin-rp-sdk-http -Dversion=4.0.1.9 -Dpackaging=jar -Dfile=D:/1/gexin-rp-sdk-http-4.0.1.9.jar
+mvn install:install-file -DgroupId=com.gexin -DartifactId=gexin-rp-sdk-base -Dversion=4.0.0.14 -Dpackaging=jar -Dfile=D:/1/gexin-rp-sdk-base-4.0.0.14.jar
