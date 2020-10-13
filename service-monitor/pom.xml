@@ -10,7 +10,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.compiler.version>1.8</project.compiler.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <docker.image.prefix>registry.eshop.com/library</docker.image.prefix>
         <docker.image.server-id>harbor</docker.image.server-id>
         <docker.image.registry-url>https://registry.eshop.com</docker.image.registry-url>
