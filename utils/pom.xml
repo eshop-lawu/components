@@ -14,7 +14,7 @@
     <properties>
         <fastjson.version>1.2.3</fastjson.version>
         <QRCode.version>1.0</QRCode.version>
-        <poi.version>3.16</poi.version>
+        <poi.version>4.1.2</poi.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <commons-io.version>2.4</commons-io.version>
         <gexin-rp-sdk-template.version>4.0.0.8</gexin-rp-sdk-template.version>
