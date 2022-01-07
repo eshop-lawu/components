@@ -17,7 +17,7 @@
         <curator-client.version>2.11.1</curator-client.version>
         <mq.version>1.4-SNAPSHOT</mq.version>
         <synchronization-lock.version>1.2-SNAPSHOT</synchronization-lock.version>
-        <h2.version>1.4.196</h2.version>
+        <h2.version>2.0.206</h2.version>
         <druid-spring-boot-starter.version>1.1.8</druid-spring-boot-starter.version>
     </properties>
     
