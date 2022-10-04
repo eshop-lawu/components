@@ -21,7 +21,7 @@
         <gexin-rp-sdk-http.version>4.0.1.9</gexin-rp-sdk-http.version>
         <gexin-rp-sdk-base.version>4.0.0.14</gexin-rp-sdk-base.version>
         <gexin-rp-fastjson.version>1.0.0.0</gexin-rp-fastjson.version>
-        <protobuf-java.version>2.5.0</protobuf-java.version>
+        <protobuf-java.version>3.16.3</protobuf-java.version>
     </properties>
     
     <dependencies>
